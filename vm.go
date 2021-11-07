@@ -3,8 +3,17 @@ package gapl
 type PC int64
 
 type VM struct {
+	scope *Scope
 	code []Op
 	states []State
+}
+
+func (self *VM) BeginScope() {
+	self.scope = new(Scope).Init(self.scope)
+}
+
+func (self *VM) EndScope() {
+	self.scope = self.scope.parentScope
 }
 
 func (self *VM) BeginState() {

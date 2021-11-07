@@ -38,6 +38,10 @@ func main() {
 			return pc
 		}))
 
+	vm.BeginScope()
+	//vm.Import(abcLib)
+	//vm.Import(mathLib)
+
 	vm.BeginState()
 	vm.PushNew(&intType, 35)
 	vm.PushNew(&intType, 7)
