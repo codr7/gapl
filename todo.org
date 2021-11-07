@@ -1,1 +1,4 @@
-* generics
+* add vm.Emit(Op)
+* add Sym type (int alias)
+** add vm.symLookup string->Int & vm.symStrings []string
+** add vm.Sym method

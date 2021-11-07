@@ -1,6 +1,6 @@
 package gapl
 
-type PC Int
+type PC int64
 
 type VM struct {
 	code []Op
@@ -20,7 +20,15 @@ func (self *VM) State() *State {
 }
 
 func (self *VM) Push(val Val) {
-	self.State().Push(val)
+	self.State().Stack.Push(val)
+}
+
+func (self *VM) Peek() *Val {
+	return self.State().Stack.Peek()
+}
+
+func (self *VM) PushNew(_type Type, data interface{}) {
+	self.Push(NewVal(_type, data))
 }
 
 func (self *VM) Eval(pc PC) {

@@ -5,7 +5,7 @@ type Val struct {
 	data interface{}
 }
 
-func Val(_type Type, data interface{}) Val {
+func NewVal(_type Type, data interface{}) Val {
 	return Val{_type: _type, data: data}
 }
 
@@ -15,4 +15,13 @@ func (self Val) Type() Type {
 
 func (self Val) Data() interface{} {
 	return self.data
+}
+
+func (self *Val) Set(_type Type, data interface{}) {
+	self._type = _type
+	self.data = data
+}
+
+func (self Val) Dump() string {
+	return self._type.DumpVal(self.data)
 }

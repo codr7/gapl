@@ -1,7 +1,11 @@
 package ops
 
+import (
+	"github.com/codr7/gapl"
+)
+
 type Push struct {
-	val gapl.Val
+	Val gapl.Val
 }
 
 func (self Push) Eval(pc gapl.PC, vm *gapl.VM) gapl.PC {
