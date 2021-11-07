@@ -1,4 +1,3 @@
-package core
+package gapl
 
-type Frame struct {
-}
+type Frame struct {}

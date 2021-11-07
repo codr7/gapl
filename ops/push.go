@@ -1,10 +1,10 @@
 package ops
 
 type Push struct {
-	val core.Val
+	val gapl.Val
 }
 
-func (self Push) Eval(pc core.PC, vm *core.VM) PC {
+func (self Push) Eval(pc gapl.PC, vm *gapl.VM) gapl.PC {
 	vm.Push(self.val)
 	return pc+1
 }

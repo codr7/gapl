@@ -1,4 +1,4 @@
-package core
+package gapl
 
 type State struct {
 	stack []Val

@@ -1,4 +1,4 @@
-package core
+package gapl
 
 type Val struct {
 	_type Type
