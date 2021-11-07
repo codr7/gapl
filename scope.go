@@ -8,7 +8,6 @@ type Scope struct {
 
 func (self *Scope) Init(parentScope *Scope) *Scope {
 	self.parentScope = parentScope
-	self.regCount = 0
 	self.bindings = make(map[string]Val)
 	return self
 }

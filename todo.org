@@ -1,9 +1,10 @@
-* add vm.Emit(Op)
-** convert push to ops in gapl.go
-** add call op
-** convert func eval to call op in gapl.go
+* add ops.Call
+** convert func eval op in gapl.go
 * add Func.IsApplicable
 ** add Type.Isa(other) bool
+* add CallFlags struct type
+** check/drop/tco
+* add flags field to ops.Call
 * add Sym type (int alias)
 ** add vm.symLookup string->Int & vm.symStrings []string
 ** add vm.Sym method

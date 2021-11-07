@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/codr7/gapl"
+	"github.com/codr7/gapl/ops"
 	"github.com/codr7/gapl/types"
 )
 
@@ -41,10 +42,12 @@ func main() {
 	vm.BeginScope()
 	//vm.Import(abcLib)
 	//vm.Import(mathLib)
-
+	vm.Emit(ops.NewPush(&intType, 35))
+	vm.Emit(ops.NewPush(&intType, 7))
+	vm.Emit(&ops.STOP)
 	vm.BeginState()
-	vm.PushNew(&intType, 35)
-	vm.PushNew(&intType, 7)
+	vm.Eval(0)
+	
 	mathLib.Find("+").Data().(*gapl.Func).Eval(-1, &vm)
 	fmt.Printf("%v\n", vm.State().Stack.Dump())
 }

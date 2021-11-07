@@ -8,8 +8,8 @@ type Stack struct {
 	Items []Val
 }
 
-func (self *Stack) Push(it Val) {
-	self.Items = append(self.Items, it)
+func (self *Stack) Push(_type Type, data interface{}) {
+	self.Items = append(self.Items, NewVal(_type, data))
 }
 
 func (self *Stack) Peek() *Val {

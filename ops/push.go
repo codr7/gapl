@@ -5,10 +5,14 @@ import (
 )
 
 type Push struct {
-	Val gapl.Val
+	val gapl.Val
+}
+
+func NewPush(_type gapl.Type, data interface{}) *Push {
+	return &Push{val: gapl.NewVal(_type, data)}
 }
 
 func (self Push) Eval(pc gapl.PC, vm *gapl.VM) gapl.PC {
-	vm.Push(self.val)
+	vm.Push(self.val.Type(), self.val.Data())
 	return pc+1
 }

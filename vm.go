@@ -16,6 +16,11 @@ func (self *VM) EndScope() {
 	self.scope = self.scope.parentScope
 }
 
+func (self *VM) Emit(op Op) Op {
+	self.code = append(self.code, op)
+	return op
+}
+
 func (self *VM) BeginState() {
 	self.states = append(self.states, State{})
 }
@@ -28,16 +33,16 @@ func (self *VM) State() *State {
 	return &self.states[len(self.states)-1]
 }
 
-func (self *VM) Push(val Val) {
-	self.State().Stack.Push(val)
+func (self *VM) Push(_type Type, data interface{}) {
+	self.State().Stack.Push(_type, data)
 }
 
 func (self *VM) Peek() *Val {
 	return self.State().Stack.Peek()
 }
 
-func (self *VM) PushNew(_type Type, data interface{}) {
-	self.Push(NewVal(_type, data))
+func (self *VM) Pop() Val {
+	return self.State().Stack.Pop()
 }
 
 func (self *VM) Eval(pc PC) {
