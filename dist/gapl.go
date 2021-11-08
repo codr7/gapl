@@ -50,7 +50,7 @@ func main() {
 	//vm.Import(mathLib)
 	vm.Emit(ops.NewPush(nil, &intType, 35))
 	vm.Emit(ops.NewPush(nil, &intType, 7))
-	vm.Emit(ops.NewCall(mathLib.Find("+").Data().(*gapl.Func), gapl.CallFlags{Check: true}))
+	vm.Emit(ops.NewCall(nil, mathLib.Find("+").Data().(*gapl.Func), gapl.CallFlags{Check: true}))
 	vm.Emit(&ops.STOP)
 	vm.NewState()
 

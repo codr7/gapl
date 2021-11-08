@@ -6,12 +6,13 @@ import (
 )
 
 type Call struct {
+	form gapl.Form
 	target *gapl.Func
 	flags gapl.CallFlags
 }
 
-func NewCall(target *gapl.Func, flags gapl.CallFlags) *Call {
-	return &Call{target: target, flags: flags}
+func NewCall(form gapl.Form, target *gapl.Func, flags gapl.CallFlags) *Call {
+	return &Call{form: form, target: target, flags: flags}
 }
 
 func (self Call) Eval(pc gapl.PC, vm *gapl.VM) (gapl.PC, error) {

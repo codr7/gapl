@@ -14,7 +14,7 @@ func (self *Reg) DumpVal(v gapl.Val) string {
 	return fmt.Sprintf("Reg(%v)", v.Data())
 }
 
-func (self *Reg) EmitVal(v gapl.Val, form gapl.Form, vm *gapl.VM) error {
+func (self *Reg) EmitVal(v gapl.Val, form gapl.Form, in gapl.Forms, vm *gapl.VM) (gapl.Forms, error) {
 	vm.Emit(ops.NewLoad(form, v.Data().(gapl.Reg)))
-	return nil
+	return in, nil
 }
