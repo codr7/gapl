@@ -1,6 +1,7 @@
 package gapl
 
-type PC int64
+type PC int
+type Reg int
 
 type VM struct {
 	scope *Scope
@@ -14,6 +15,10 @@ func (self *VM) NewScope() {
 
 func (self *VM) EndScope() {
 	self.scope = self.scope.parentScope
+}
+
+func (self *VM) Scope() *Scope {
+	return self.scope
 }
 
 func (self *VM) Emit(op Op) Op {

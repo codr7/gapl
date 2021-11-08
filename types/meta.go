@@ -5,10 +5,9 @@ import (
 )
 
 type Meta struct {
-	gapl.BasicType
+	Basic
 }
 
-func (self *Meta) DumpVal(v interface{}) string {
-	return v.(gapl.Type).Name()
+func (self *Meta) DumpVal(v gapl.Val) string {
+	return v.Data().(gapl.Type).Name()
 }
-

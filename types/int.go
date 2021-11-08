@@ -6,10 +6,9 @@ import (
 )
 
 type Int struct {
-	gapl.BasicType
+	Basic
 }
 
-func (self *Int) DumpVal(v interface{}) string {
-	return strconv.Itoa(v.(int))
+func (self *Int) DumpVal(v gapl.Val) string {
+	return strconv.Itoa(v.Data().(int))
 }
-

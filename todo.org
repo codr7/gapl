@@ -1,10 +1,7 @@
-* add forms
-** add Pos struct
-** add Form/BasicForm with Pos()
-* add readers
-* add repl
-* add macros
+* readers
+* gapl.Repl(in, out)
+* macros
 * fib
-* add Sym type (int alias)
-** add vm.symLookup string->Int & vm.symStrings []string
-** add vm.Sym method
+* type Sym Int
+** vm.symLookup string->Int & vm.symStrings []string
+** vm.Sym method

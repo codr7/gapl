@@ -9,7 +9,8 @@ type Type interface {
 	AddParentTypes(dst map[Type]Type, dpt Type)
 	GetParentType(other Type) Type
 
-	DumpVal(v interface{}) string
+	DumpVal(v Val) string
+	EmitVal(v Val, form Form, vm *VM) error
 }
 
 type BasicType struct {
@@ -47,8 +48,8 @@ func (self *BasicType) GetParentType(other Type) Type {
 	return self.parentTypes[other]
 }
 
-func (self *BasicType) DumpVal(v interface{}) string {
-	return fmt.Sprintf("%v", v)
+func (self *BasicType) DumpVal(v Val) string {
+	return fmt.Sprintf("%v", v.Data())
 }
 
 func Isa(child, parent Type) bool {

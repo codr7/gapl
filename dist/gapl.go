@@ -14,7 +14,7 @@ func main() {
 	var abcLib gapl.Lib
 	abcLib.Init("abc")
 
-	var anyType gapl.BasicType
+	var anyType types.Basic
 	anyType.Init("Any")
 
 	var metaType types.Meta
@@ -47,8 +47,8 @@ func main() {
 	vm.NewScope()
 	//vm.Import(abcLib)
 	//vm.Import(mathLib)
-	vm.Emit(ops.NewPush(&intType, 35))
-	vm.Emit(ops.NewPush(&intType, 7))
+	vm.Emit(ops.NewPush(nil, &intType, 35))
+	vm.Emit(ops.NewPush(nil, &intType, 7))
 	vm.Emit(ops.NewCall(mathLib.Find("+").Data().(*gapl.Func), gapl.CallFlags{Check: true}))
 	vm.Emit(&ops.STOP)
 	vm.NewState()

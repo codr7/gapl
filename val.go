@@ -23,5 +23,9 @@ func (self *Val) Set(_type Type, data interface{}) {
 }
 
 func (self Val) Dump() string {
-	return self._type.DumpVal(self.data)
+	return self._type.DumpVal(self)
+}
+
+func (self Val) Emit(form Form, vm *VM) error {
+	return self._type.EmitVal(self, form, vm)
 }

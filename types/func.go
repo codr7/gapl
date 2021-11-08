@@ -5,10 +5,10 @@ import (
 )
 
 type Func struct {
-	gapl.BasicType
+	Basic
 }
 
-func (self *Func) DumpVal(v interface{}) string {
-	return v.(*gapl.Func).Dump()
+func (self *Func) DumpVal(v gapl.Val) string {
+	return v.Data().(*gapl.Func).Dump()
 }
 

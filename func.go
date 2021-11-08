@@ -28,7 +28,7 @@ func (self Rets) Add(_type Type) Rets {
 type CallFlags struct {
 	Check bool
 	Drop bool
-	TCO bool
+	Tco bool
 }
 
 type FuncBody = func(self *Func, flags CallFlags, pc PC, vm *VM) (PC, error)
