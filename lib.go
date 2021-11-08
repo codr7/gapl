@@ -19,7 +19,7 @@ func (self *Lib) Name() string {
 	return self.name
 }
 
-func (self *Lib) BindNew(key string, _type Type, data interface{}) error {
+func (self *Lib) Bind(key string, _type Type, data interface{}) error {
 	prev, ok := self.bindings[key]
 
 	if ok {

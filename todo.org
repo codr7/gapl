@@ -1,10 +1,6 @@
-* add ops.Call
-** convert func eval op in gapl.go
 * add Func.IsApplicable
 ** add Type.Isa(other) bool
-* add CallFlags struct type
-** check/drop/tco
-* add flags field to ops.Call
+** use in ops.Call if flags.Check
 * add Sym type (int alias)
 ** add vm.symLookup string->Int & vm.symStrings []string
 ** add vm.Sym method

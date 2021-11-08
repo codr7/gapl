@@ -12,7 +12,7 @@ func NewPush(_type gapl.Type, data interface{}) *Push {
 	return &Push{val: gapl.NewVal(_type, data)}
 }
 
-func (self Push) Eval(pc gapl.PC, vm *gapl.VM) gapl.PC {
+func (self Push) Eval(pc gapl.PC, vm *gapl.VM) (gapl.PC, error) {
 	vm.Push(self.val.Type(), self.val.Data())
-	return pc+1
+	return pc+1, nil
 }

@@ -8,6 +8,10 @@ type Stop struct {}
 
 var STOP Stop
 
-func (self Stop) Eval(pc gapl.PC, vm *gapl.VM) gapl.PC {
-	return -1
+func (self Stop) Error() string {
+	return "STOP"
+}
+
+func (self Stop) Eval(pc gapl.PC, vm *gapl.VM) (gapl.PC, error) {
+	return pc, self
 }

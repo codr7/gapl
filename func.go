@@ -25,7 +25,13 @@ func (self Rets) Add(_type Type) Rets {
 	return append(self, _type)
 }
 
-type FuncBody = func(self *Func, pc PC, vm *VM) PC
+type CallFlags struct {
+	Check bool
+	Drop bool
+	TCO bool
+}
+
+type FuncBody = func(self *Func, flags CallFlags, pc PC, vm *VM) (PC, error)
 
 type Func struct {
 	name string
@@ -55,6 +61,6 @@ func (self *Func) Dump() string {
 	return buf.String()
 }
 
-func (self *Func) Eval(pc PC, vm *VM) PC {
-	return self.body(self, pc, vm)
+func (self *Func) Eval(flags CallFlags, pc PC, vm *VM) (PC, error) {
+	return self.body(self, flags, pc, vm)
 }

@@ -8,7 +8,7 @@ type VM struct {
 	states []State
 }
 
-func (self *VM) BeginScope() {
+func (self *VM) NewScope() {
 	self.scope = new(Scope).Init(self.scope)
 }
 
@@ -21,7 +21,7 @@ func (self *VM) Emit(op Op) Op {
 	return op
 }
 
-func (self *VM) BeginState() {
+func (self *VM) NewState() {
 	self.states = append(self.states, State{})
 }
 
@@ -45,8 +45,16 @@ func (self *VM) Pop() Val {
 	return self.State().Stack.Pop()
 }
 
-func (self *VM) Eval(pc PC) {
-	for pc != -1 {
-		pc = self.code[pc].Eval(pc, self)
+func (self *VM) Eval(pc PC) error {
+	var err error
+	
+	for err == nil {
+		pc, err = self.code[pc].Eval(pc, self)
 	}
+
+	if err != nil && err.Error() == "STOP" {
+		return nil
+	}
+
+	return err
 }
