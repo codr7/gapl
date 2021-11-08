@@ -61,6 +61,6 @@ func (self *Func) Dump() string {
 	return buf.String()
 }
 
-func (self *Func) Eval(flags CallFlags, pc PC, vm *VM) (PC, error) {
+func (self *Func) Call(flags CallFlags, pc PC, vm *VM) (PC, error) {
 	return self.body(self, flags, pc, vm)
 }

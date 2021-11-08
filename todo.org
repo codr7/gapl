@@ -1,6 +1,10 @@
 * add Func.IsApplicable
 ** add Type.Isa(other) bool
 ** use in ops.Call if flags.Check
+* add forms
+* add readers
+* add repl
+* fib
 * add Sym type (int alias)
 ** add vm.symLookup string->Int & vm.symStrings []string
 ** add vm.Sym method
