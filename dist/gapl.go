@@ -10,6 +10,7 @@ import (
 
 func main() {
 	var vm gapl.VM
+	vm.RegType = new(types.Reg)
 	
 	var abcLib gapl.Lib
 	abcLib.Init("abc")

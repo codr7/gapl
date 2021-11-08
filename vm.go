@@ -4,6 +4,7 @@ type PC int
 type Reg int
 
 type VM struct {
+	RegType Type
 	scope *Scope
 	code []Op
 	states []State
