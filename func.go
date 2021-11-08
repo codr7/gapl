@@ -56,9 +56,27 @@ func (self *Func) Dump() string {
 	var buf strings.Builder
 	buf.WriteString("Func(")
 	buf.WriteString(self.name)
-	buf.WriteString(" (")
-	buf.WriteString("))")
+	buf.WriteString(" [")
+	buf.WriteString("] [")
+	buf.WriteString("])")
 	return buf.String()
+}
+
+func (self *Func) Applicable(stack *Stack) bool {
+	nargs := len(self.args)
+	nits := len(stack.Items)
+	
+	if nits < nargs {
+		return false
+	}
+	
+	for i := 0; i < nargs; i++ {
+		if !Isa(stack.Items[nits-i-1].Type(), self.args[nargs-i-1]._type) {
+			return false
+		}
+	}
+
+	return true
 }
 
 func (self *Func) Call(flags CallFlags, pc PC, vm *VM) (PC, error) {

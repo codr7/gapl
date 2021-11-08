@@ -1,9 +1,9 @@
-* add Func.IsApplicable
-** add Type.Isa(other) bool
-** use in ops.Call if flags.Check
 * add forms
+** add Pos struct
+** add Form/BasicForm with Pos()
 * add readers
 * add repl
+* add macros
 * fib
 * add Sym type (int alias)
 ** add vm.symLookup string->Int & vm.symStrings []string
