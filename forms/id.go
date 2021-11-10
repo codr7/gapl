@@ -1,6 +1,7 @@
 package forms
 
 import (
+	"fmt"
 	"github.com/codr7/gapl"
 )
 
@@ -9,16 +10,23 @@ type Id struct {
 	name string
 }
 
-func (self *Id) Emit(in []Form, vm *Vm) ([]Form, error) {
+func NewId(pos gapl.Pos, name string) *Id {
+	self := new(Id)
+	self.Init(pos)
+	self.name = name
+	return self
+}
+
+func (self *Id) Emit(in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 	v := vm.Scope().Find(self.name)
 
 	if v == nil {
 		return in, fmt.Errorf("Unknown id: %v", self.name)
 	}
 	
-	return in, v.Emit(self, vm)
+	return v.Emit(self, in, vm)
 }
 
-func (self Id) Val(vm *Vm) *Val {
+func (self Id) Val(vm *gapl.Vm) *gapl.Val {
 	return vm.Scope().Find(self.name)
 }

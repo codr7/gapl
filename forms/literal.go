@@ -9,10 +9,10 @@ type Literal struct {
 	val gapl.Val
 }
 
-func (self *Literal) Emit(in []Form, vm *Vm) ([]Form, error) {
-	return in, self.val.Emit(self, vm)
+func (self *Literal) Emit(in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
+	return self.val.Emit(self, in, vm)
 }
 
-func (self Literal) Val(vm *Vm) *Val {
+func (self Literal) Val(vm *gapl.Vm) *gapl.Val {
 	return &self.val
 }

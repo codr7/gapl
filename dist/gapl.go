@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/codr7/gapl"
+	"github.com/codr7/gapl/readers"
 	"github.com/codr7/gapl/types"
 	"os"
 )
@@ -48,8 +49,9 @@ func main() {
 	vm.NewState()
 
 	fmt.Printf("gapl %v\n", gapl.VERSION)
-	fmt.Println("press Return on empty line to eval")
-	fmt.Println("may the Source be with you\n")
+	fmt.Println("press Return on empty line to Eval")
+	fmt.Println("may the Source be with You\n")
 
-	gapl.Repl(&vm, os.Stdin, os.Stdout)
+	vm.AddReader(readers.Ws, readers.Id)
+	gapl.Repl(os.Stdin, os.Stdout, &vm)
 }

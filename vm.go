@@ -1,6 +1,7 @@
 package gapl
 
 import (
+	"bufio"
 	"fmt"
 )
 
@@ -10,10 +11,16 @@ type Reg int
 func (self Reg) String() string { return fmt.Sprintf("Reg(%v)", self) }
 
 type Vm struct {
+	Readers []Reader
 	RegType Type
+	
 	scope *Scope
 	code []Op
 	states []State
+}
+
+func (self *Vm) AddReader(in...Reader) {
+	self.Readers = append(self.Readers, in...)
 }
 
 func (self *Vm) NewScope() {
@@ -24,6 +31,16 @@ func (self *Vm) EndScope() {
 	self.scope = self.scope.parentScope
 }
 
+func (self *Vm) ReadForm(in *bufio.Reader, pos *Pos) (Form, error) {
+	for _, r := range self.Readers {
+		if f, err := r(in, pos, self); f != nil || err != nil {
+			return f, err
+		}
+	}
+	
+	return nil, nil
+}
+
 func (self *Vm) Scope() *Scope {
 	return self.scope
 }
@@ -32,9 +49,8 @@ func (self *Vm) Pc() Pc {
 	return Pc(len(self.code))
 }
 
-func (self *Vm) Emit(op Op) Op {
+func (self *Vm) Emit(op Op) {
 	self.code = append(self.code, op)
-	return op
 }
 
 func (self *Vm) NewState() {
