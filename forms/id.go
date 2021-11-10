@@ -9,7 +9,7 @@ type Id struct {
 	name string
 }
 
-func (self *Id) Emit(in []Form, vm *VM) ([]Form, error) {
+func (self *Id) Emit(in []Form, vm *Vm) ([]Form, error) {
 	v := vm.Scope().Find(self.name)
 
 	if v == nil {
@@ -19,6 +19,6 @@ func (self *Id) Emit(in []Form, vm *VM) ([]Form, error) {
 	return in, v.Emit(self, vm)
 }
 
-func (self Id) Val(vm *VM) *Val {
+func (self Id) Val(vm *Vm) *Val {
 	return vm.Scope().Find(self.name)
 }

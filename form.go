@@ -2,8 +2,8 @@ package gapl
 
 type Form interface {
 	Pos() Pos
-	Emit(in []Form, vm *VM) ([]Form, error)
-	Val(vm *VM) *Val
+	Emit(in []Form, vm *Vm) ([]Form, error)
+	Val(vm *Vm) *Val
 }
 
 type BasicForm struct {
@@ -19,6 +19,6 @@ func (self BasicForm) Pos() Pos {
 	return self.pos
 }
 
-func (self BasicForm) Val(vm *VM) *Val {
+func (self BasicForm) Val(vm *Vm) *Val {
 	return nil
 }

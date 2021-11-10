@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func Repl(vm *VM, in io.Reader, out io.Writer) {
+func Repl(vm *Vm, in io.Reader, out io.Writer) {
 	fmt.Fprintf(out, "gapl %v\n", 1)
 	fmt.Fprintf(out, "press Return on empty line to eval\n")
 	fmt.Fprintf(out, "may the Source be with you\n\n")

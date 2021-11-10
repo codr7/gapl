@@ -10,7 +10,7 @@ type Type interface {
 	GetParentType(other Type) Type
 
 	DumpVal(v Val) string
-	EmitVal(v Val, form Form, in []Form, vm *VM) ([]Form, error)
+	EmitVal(v Val, form Form, in []Form, vm *Vm) ([]Form, error)
 }
 
 type BasicType struct {

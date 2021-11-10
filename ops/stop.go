@@ -12,6 +12,6 @@ func (self Stop) Error() string {
 	return "STOP"
 }
 
-func (self Stop) Eval(pc gapl.PC, vm *gapl.VM) (gapl.PC, error) {
+func (self Stop) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	return pc, self
 }

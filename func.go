@@ -31,7 +31,7 @@ type CallFlags struct {
 	Tco bool
 }
 
-type FuncBody = func(self *Func, flags CallFlags, pc PC, vm *VM) (PC, error)
+type FuncBody = func(self *Func, flags CallFlags, pc Pc, vm *Vm) (Pc, error)
 
 type Func struct {
 	name string
@@ -79,6 +79,6 @@ func (self *Func) Applicable(stack *Stack) bool {
 	return true
 }
 
-func (self *Func) Call(flags CallFlags, pc PC, vm *VM) (PC, error) {
+func (self *Func) Call(flags CallFlags, pc Pc, vm *Vm) (Pc, error) {
 	return self.body(self, flags, pc, vm)
 }

@@ -1,5 +1,5 @@
 package gapl
 
 type Op interface {
-	Eval(pc PC, vm *VM) (PC, error)
+	Eval(pc Pc, vm *Vm) (Pc, error)
 }

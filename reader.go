@@ -22,11 +22,11 @@ func (self ERead) Error() string {
 	return fmt.Sprintf("Error in %v: %v", self.pos, self.message)
 }
 
-type Reader func(in *bufio.Reader, pos *Pos, vm *VM) (Form, error)
+type Reader func(in *bufio.Reader, pos *Pos, vm *Vm) (Form, error)
 
 var AllReaders = []Reader{ReadWs, ReadId}
 
-func ReadForm(in *bufio.Reader, pos *Pos, vm *VM) (Form, error) {
+func ReadForm(in *bufio.Reader, pos *Pos, vm *Vm) (Form, error) {
 	for _, r := range AllReaders {
 		if f, err := r(in, pos, vm); f != nil || err != nil {
 			return f, err
@@ -36,13 +36,13 @@ func ReadForm(in *bufio.Reader, pos *Pos, vm *VM) (Form, error) {
 	return nil, nil
 }
 
-func ReadId(in *bufio.Reader, pos *Pos, vm *VM) (Form, error) {
+func ReadId(in *bufio.Reader, pos *Pos, vm *Vm) (Form, error) {
 	fpos := *pos
 	//var name strings.Builder
 	return nil, NewERead(fpos, "Invalid input")
 }
 
-func ReadWs(in *bufio.Reader, pos *Pos, vm *VM) (Form, error) {
+func ReadWs(in *bufio.Reader, pos *Pos, vm *Vm) (Form, error) {
 	for {
 		if c, _, err := in.ReadRune(); err != nil {
 			return nil, err

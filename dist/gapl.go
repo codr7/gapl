@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	var vm gapl.VM
+	var vm gapl.Vm
 	vm.RegType = new(types.Reg)
 	
 	var abcLib gapl.Lib
@@ -35,7 +35,7 @@ func main() {
 	mathLib.Bind("+", &funcType, new(gapl.Func).Init("+",
 		gapl.Args{}.Add("x", &intType).Add("y", &intType),
 		gapl.Rets{}.Add(&intType),
-		func(self *gapl.Func, flags gapl.CallFlags, pc gapl.PC, vm *gapl.VM) (gapl.PC, error) {
+		func(self *gapl.Func, flags gapl.CallFlags, pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 			stack := &vm.State().Stack
 			y := stack.Pop()
 			x := stack.Peek()

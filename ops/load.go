@@ -13,7 +13,7 @@ func NewLoad(form gapl.Form, reg gapl.Reg) *Load {
 	return &Load{form: form, reg: reg}
 }
 
-func (self Load) Eval(pc gapl.PC, vm *gapl.VM) (gapl.PC, error) {
+func (self Load) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	v := vm.State().Regs[self.reg]
 	vm.Push(v.Type(), v.Data())
 	return pc+1, nil
