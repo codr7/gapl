@@ -10,7 +10,7 @@ type Type interface {
 	GetParentType(other Type) Type
 
 	DumpVal(v Val) string
-	EmitVal(v Val, form Form, in Forms, vm *VM) (Forms, error)
+	EmitVal(v Val, form Form, in []Form, vm *VM) ([]Form, error)
 }
 
 type BasicType struct {
@@ -31,6 +31,10 @@ func (self *BasicType) Init(name string, parentTypes...Type) *BasicType {
 
 func (self *BasicType) Name() string {
 	return self.name
+}
+
+func (self *BasicType) String() string {
+	return self.Name()
 }
 
 func (self *BasicType) AddParentTypes(dst map[Type]Type, dpt Type) {

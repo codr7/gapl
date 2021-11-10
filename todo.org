@@ -1,7 +1,5 @@
-* readers
-* gapl.Repl(in, out)
+* add id reader
+* add int reader
+* add group reader
 * macros
 * fib
-* type Sym Int
-** vm.symLookup string->Int & vm.symStrings []string
-** vm.Sym method

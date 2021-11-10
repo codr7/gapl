@@ -26,6 +26,6 @@ func (self Val) Dump() string {
 	return self._type.DumpVal(self)
 }
 
-func (self Val) Emit(form Form, in Forms, vm *VM) (Forms, error) {
+func (self Val) Emit(form Form, in []Form, vm *VM) ([]Form, error) {
 	return self._type.EmitVal(self, form, in, vm)
 }

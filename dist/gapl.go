@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"github.com/codr7/gapl"
-	"github.com/codr7/gapl/ops"
 	"github.com/codr7/gapl/types"
-	"log"
+	"os"
 )
 
 func main() {
@@ -46,17 +44,6 @@ func main() {
 		}))
 
 	vm.NewScope()
-	//vm.Import(abcLib)
-	//vm.Import(mathLib)
-	vm.Emit(ops.NewPush(nil, &intType, 35))
-	vm.Emit(ops.NewPush(nil, &intType, 7))
-	vm.Emit(ops.NewCall(nil, mathLib.Find("+").Data().(*gapl.Func), gapl.CallFlags{Check: true}))
-	vm.Emit(&ops.STOP)
 	vm.NewState()
-
-	if err := vm.Eval(0); err != nil {
-		log.Fatal(err)
-	}
-	
-	fmt.Printf("%v\n", vm.State().Stack.Dump())
+	gapl.Repl(&vm, os.Stdin, os.Stdout)
 }

@@ -23,7 +23,7 @@ func (self *Stack) Pop() Val {
 	return it
 }
 
-func (self Stack) Dump() string {
+func (self Stack) String() string {
 	var buf strings.Builder
 	buf.WriteRune('[')
 
@@ -38,4 +38,3 @@ func (self Stack) Dump() string {
 	buf.WriteRune(']')
 	return buf.String()
 }
-

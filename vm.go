@@ -1,7 +1,13 @@
 package gapl
 
+import (
+	"fmt"
+)
+
 type PC int
 type Reg int
+
+func (self Reg) String() string { return fmt.Sprintf("Reg(%v)", self) }
 
 type VM struct {
 	RegType Type
@@ -39,6 +45,10 @@ func (self *VM) State() *State {
 	return &self.states[len(self.states)-1]
 }
 
+func (self *VM) Stack() *Stack {
+	return &self.State().Stack
+}
+
 func (self *VM) Push(_type Type, data interface{}) {
 	self.State().Stack.Push(_type, data)
 }
@@ -49,6 +59,10 @@ func (self *VM) Peek() *Val {
 
 func (self *VM) Pop() Val {
 	return self.State().Stack.Pop()
+}
+
+func (self *VM) Pc() PC {
+	return PC(len(self.code))
 }
 
 func (self *VM) Eval(pc PC) error {

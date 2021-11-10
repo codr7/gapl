@@ -52,7 +52,7 @@ func (self *Func) Name() string {
 	return self.name
 }
 
-func (self *Func) Dump() string {
+func (self *Func) String() string {
 	var buf strings.Builder
 	buf.WriteString("Func(")
 	buf.WriteString(self.name)

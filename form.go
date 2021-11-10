@@ -1,10 +1,8 @@
 package gapl
 
-type Forms []Form
-
 type Form interface {
 	Pos() Pos
-	Emit(in Forms, vm *VM) (Forms, error)
+	Emit(in []Form, vm *VM) ([]Form, error)
 	Val(vm *VM) *Val
 }
 
