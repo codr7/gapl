@@ -5,6 +5,8 @@ import (
 )
 
 type Type interface {
+	Init(name string, parentTypes...Type)
+
 	Name() string
 	AddParentTypes(dst map[Type]Type, dpt Type)
 	GetParentType(other Type) Type
@@ -18,15 +20,13 @@ type BasicType struct {
 	parentTypes map[Type]Type
 }
 
-func (self *BasicType) Init(name string, parentTypes...Type) *BasicType {
+func (self *BasicType) Init(name string, parentTypes...Type) {
 	self.name = name
 	self.parentTypes = make(map[Type]Type)
 	
 	for _, pt := range parentTypes {
 		self.Derive(pt)
 	}
-	
-	return self
 }
 
 func (self *BasicType) Name() string {

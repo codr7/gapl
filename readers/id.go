@@ -28,6 +28,9 @@ func Id(in *bufio.Reader, pos *gapl.Pos, vm *gapl.Vm) (gapl.Form, error) {
 		}
 	}
 
-	f := forms.NewId(fpos, buf.String())
-	return f, nil
+	if buf.Len() == 0 {
+		return nil, nil
+	}
+	
+	return forms.NewId(fpos, buf.String()), nil
 }

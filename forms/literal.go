@@ -9,6 +9,13 @@ type Literal struct {
 	val gapl.Val
 }
 
+func NewLiteral(pos gapl.Pos, _type gapl.Type, data interface{}) *Literal {
+	self := new(Literal)
+	self.Init(pos)
+	self.val = gapl.NewVal(_type, data)
+	return self
+}
+
 func (self *Literal) Emit(in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 	return self.val.Emit(self, in, vm)
 }

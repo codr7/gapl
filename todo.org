@@ -1,4 +1,13 @@
-* add int reader
 * add macros
+** Emit func
+* add +/- macros
+** rename math.+/- to add/sub
+** add inc/dec ops
+* add if macro
 * add group reader
+* add func macro
 * fib bench
+
+func fib (n Int) (Int) 
+  if < n 2 n + fib - n 1 fib - n 2
+fib 10

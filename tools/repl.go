@@ -1,23 +1,23 @@
-package gapl
+package tools
 
 import (
 	"bufio"
 	"fmt"
+	"github.com/codr7/gapl"
+	"github.com/codr7/gapl/ops"
 	"io"
 	"strings"
 )
 
-const VERSION = 1
-
-func Repl(in io.Reader, out io.Writer, vm *Vm) {
+func Repl(in io.Reader, out io.Writer, vm *gapl.Vm) {
 	fmt.Fprintf(out, "  ")
 	var buf strings.Builder
 	ins := bufio.NewScanner(in)
 	
 	for ins.Scan() {
 		if line := ins.Text(); len(line) == 0 && buf.Len() > 0 {
-			pos := NewPos("repl", 0, 0)
-			var forms []Form
+			pos := gapl.NewPos("repl", 0, 0)
+			var forms []gapl.Form
 			bin := bufio.NewReader(strings.NewReader(buf.String()))
 			
 			for {
@@ -48,6 +48,8 @@ func Repl(in io.Reader, out io.Writer, vm *Vm) {
 			}
 
 			if len(forms) == 0 && vm.Pc() != pc {
+				vm.Emit(&ops.STOP)
+				
 				if err := vm.Eval(pc); err != nil {
 					fmt.Fprintln(out, err)
 				}

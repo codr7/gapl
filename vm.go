@@ -5,6 +5,8 @@ import (
 	"fmt"
 )
 
+const VERSION = 1
+
 type Pc int
 type Reg int
 
@@ -12,7 +14,7 @@ func (self Reg) String() string { return fmt.Sprintf("Reg(%v)", self) }
 
 type Vm struct {
 	Readers []Reader
-	RegType Type
+	IntType, RegType Type
 	
 	scope *Scope
 	code []Op

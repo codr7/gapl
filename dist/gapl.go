@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/codr7/gapl"
 	"github.com/codr7/gapl/readers"
+	"github.com/codr7/gapl/tools"
 	"github.com/codr7/gapl/types"
 	"os"
 )
@@ -11,6 +12,7 @@ import (
 func main() {
 	var vm gapl.Vm
 	vm.RegType = new(types.Reg)
+	vm.RegType.Init("Reg")
 	
 	var abcLib gapl.Lib
 	abcLib.Init("abc")
@@ -27,16 +29,16 @@ func main() {
 	funcType.Init("Func", &anyType)
 	abcLib.Bind("Func", &metaType, &funcType)
 	
-	var intType types.Int
-	intType.Init("Int", &anyType)
-	abcLib.Bind("Int", &metaType, &intType)
+	vm.IntType = new(types.Int)
+	vm.IntType.Init("Int")
+	abcLib.Bind("Int", &metaType, vm.IntType)
 
 	var mathLib gapl.Lib
 	mathLib.Init("math")
 
 	mathLib.Bind("+", &funcType, new(gapl.Func).Init("+",
-		gapl.Args{}.Add("x", &intType).Add("y", &intType),
-		gapl.Rets{}.Add(&intType),
+		gapl.Args{}.Add("x", vm.IntType).Add("y", vm.IntType),
+		gapl.Rets{}.Add(vm.IntType),
 		func(self *gapl.Func, flags gapl.CallFlags, pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 			stack := &vm.State().Stack
 			y := stack.Pop()
@@ -49,11 +51,11 @@ func main() {
 	fmt.Println("press Return on empty line to Eval")
 	fmt.Println("may the Source be with You\n")
 
-	vm.AddReader(readers.Ws, readers.Id)
+	vm.AddReader(readers.Ws, readers.Int, readers.Id)
 	vm.NewScope()
 	abcLib.Import(vm.Scope())
 	mathLib.Import(vm.Scope())
 	vm.NewState()
 	
-	gapl.Repl(os.Stdin, os.Stdout, &vm)
+	tools.Repl(os.Stdin, os.Stdout, &vm)
 }
