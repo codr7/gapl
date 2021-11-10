@@ -45,13 +45,15 @@ func main() {
 			return pc, nil
 		}))
 
-	vm.NewScope()
-	vm.NewState()
-
 	fmt.Printf("gapl %v\n", gapl.VERSION)
 	fmt.Println("press Return on empty line to Eval")
 	fmt.Println("may the Source be with You\n")
 
 	vm.AddReader(readers.Ws, readers.Id)
+	vm.NewScope()
+	abcLib.Import(vm.Scope())
+	mathLib.Import(vm.Scope())
+	vm.NewState()
+	
 	gapl.Repl(os.Stdin, os.Stdout, &vm)
 }

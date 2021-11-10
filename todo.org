@@ -1,5 +1,4 @@
-* fix lib import
-* add macros
 * add int reader
+* add macros
 * add group reader
 * fib bench

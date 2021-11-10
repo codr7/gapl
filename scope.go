@@ -1,7 +1,6 @@
 package gapl
 
 import (
-	"fmt"
 )
 
 type Scope struct {
@@ -21,15 +20,8 @@ func (self *Scope) Init(parentScope *Scope) *Scope {
 	return self
 }
 
-func (self *Scope) Bind(key string, _type Type, data interface{}) error {
-	prev, ok := self.bindings[key]
-
-	if ok {
-		return fmt.Errorf("Dup binding: %v\n%v", key, prev)
-	}
-	
+func (self *Scope) Bind(key string, _type Type, data interface{}) {
 	self.bindings[key] = NewVal(_type, data)
-	return nil
 }
 
 func (self *Scope) Find(key string) *Val {

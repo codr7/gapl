@@ -30,6 +30,34 @@ func (self *Lib) Bind(key string, _type Type, data interface{}) error {
 	return nil
 }
 
-func (self Lib) Find(key string) Val {
-	return self.bindings[key]
+func (self Lib) Find(key string) *Val {
+	if v, ok := self.bindings[key]; ok {
+		return &v
+	}
+
+	return nil
+}
+
+func (self Lib) Import(scope *Scope, keys...string) error {
+	if keys == nil {
+		for k, _ := range self.bindings {
+			keys = append(keys, k)
+		}
+	}
+	
+	for _, k := range keys {
+		val := self.Find(k)
+
+		if val == nil {
+			return fmt.Errorf("Unknown id: %v", k)
+		}
+
+		if v := scope.Find(k); v != nil {
+			return fmt.Errorf("Dup binding: %v\n%v", k, v)
+		}
+		
+		scope.Bind(k, val.Type(), val.Data())
+	}
+
+	return nil
 }
