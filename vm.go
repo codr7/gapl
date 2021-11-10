@@ -28,6 +28,10 @@ func (self *Vm) Scope() *Scope {
 	return self.scope
 }
 
+func (self *Vm) Pc() Pc {
+	return Pc(len(self.code))
+}
+
 func (self *Vm) Emit(op Op) Op {
 	self.code = append(self.code, op)
 	return op
@@ -61,8 +65,12 @@ func (self *Vm) Pop() Val {
 	return self.State().Stack.Pop()
 }
 
-func (self *Vm) Pc() Pc {
-	return Pc(len(self.code))
+func (self *Vm) BindReg(key string) int {
+	scope := self.Scope()
+	reg := scope.regCount
+	scope.regCount++
+	scope.Bind(key, self.RegType, reg)
+	return reg
 }
 
 func (self *Vm) Eval(pc Pc) error {
