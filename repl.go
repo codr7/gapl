@@ -7,10 +7,9 @@ import (
 	"strings"
 )
 
+const VERSION = 1
+
 func Repl(vm *Vm, in io.Reader, out io.Writer) {
-	fmt.Fprintf(out, "gapl %v\n", 1)
-	fmt.Fprintf(out, "press Return on empty line to eval\n")
-	fmt.Fprintf(out, "may the Source be with you\n\n")
 	fmt.Fprintf(out, "  ")
 	var buf strings.Builder
 	ins := bufio.NewScanner(in)
@@ -22,7 +21,9 @@ func Repl(vm *Vm, in io.Reader, out io.Writer) {
 			bin := bufio.NewReader(strings.NewReader(buf.String()))
 			
 			for {
-				if f, err := ReadForm(bin, &pos, vm); err != nil {
+				if f, err := ReadForm(bin, &pos, vm); err == io.EOF {
+					break
+				} else if err != nil {
 					fmt.Fprintln(out, err)
 					forms = nil
 					break
@@ -35,7 +36,7 @@ func Repl(vm *Vm, in io.Reader, out io.Writer) {
 
 			pc := vm.Pc()
 			
-			for len(forms) > 0 {
+			for len(forms) != 0 {
 				f := forms[0]
 				var err error
 				forms, err = f.Emit(forms[1:], vm)
