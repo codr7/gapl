@@ -1,10 +1,9 @@
-* add group reader
 * add func macro
 * add frames
 ** add Vm.frame
 ** add Frame.target/retPc
-** add Vm.NewFrame()
-** add Vm.EndFrame()
+** add Vm.New/EndFrame()
+*** push/pop state
 * fibrec
 ** add Bench op
 * add dd support to id emit

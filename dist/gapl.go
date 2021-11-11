@@ -95,11 +95,22 @@ func main() {
 			return pc, nil
 		}))
 
+	mathLib.Bind("<", &funcType, new(gapl.Func).Init("<",
+		gapl.Args{}.Add("x", vm.IntType).Add("y", vm.IntType),
+		gapl.Rets{}.Add(&boolType),
+		func(self *gapl.Func, flags gapl.CallFlags, pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
+			stack := vm.Stack()
+			y := stack.Pop()
+			x := stack.Peek()
+			x.Set(&boolType, x.Data().(int) < y.Data().(int))
+			return pc, nil
+		}))
+
 	fmt.Printf("gapl %v\n", gapl.VERSION)
 	fmt.Println("press Return on empty line to Eval")
 	fmt.Println("may the Source be with You\n")
 
-	vm.AddReader(readers.Ws, readers.Int, readers.Id)
+	vm.AddReader(readers.Ws, readers.Int, readers.Group, readers.Id)
 	vm.NewScope()
 	abcLib.Import(vm.Scope())
 	mathLib.Import(vm.Scope())

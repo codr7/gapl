@@ -19,7 +19,7 @@ func Id(in *bufio.Reader, pos *gapl.Pos, vm *gapl.Vm) (gapl.Form, error) {
 			break
 		} else if err != nil {
 			return nil, err
-		} else if unicode.IsSpace(c) {
+		} else if unicode.IsSpace(c) || c == '(' || c == ')' {
 			in.UnreadRune()
 			break
 		} else {
