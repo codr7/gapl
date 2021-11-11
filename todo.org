@@ -1,8 +1,13 @@
-* check literal (Val != nil) args in Func.EmitVal
-** disable check flag if all literals
+* add Bool type
+* add Type.TrueVal() bool
 * add if macro
 * add group reader
 * add func macro
+* add frames
+** add Vm.frame
+** add Frame.target/retPc
+** add Vm.NewFrame()
+** add Vm.EndFrame()
 * fib bench
 * --
 * add inc op/support like dec

@@ -27,6 +27,8 @@ func (self *Func) EmitVal(v gapl.Val, form gapl.Form, in []gapl.Form, vm *gapl.V
 			return in[2:], nil
 		}
 	}
+
+	litArgs := true
 	
 	for _, a := range f.Args() {
 		if len(in) == 0 {
@@ -34,6 +36,14 @@ func (self *Func) EmitVal(v gapl.Val, form gapl.Form, in []gapl.Form, vm *gapl.V
 		}
 		
 		af := in[0]
+		av := af.Val(vm)
+
+		if av == nil {
+			litArgs = false
+		} else if !gapl.Isa(av.Type(), a.Type()) {
+			return in, gapl.NewEEmit(af.Pos(), "Not applicable: %v %v", av.Type(), a.Type())
+		}
+		
 		var err error
 
 		if in, err = af.Emit(in[1:], vm); err != nil {
@@ -41,7 +51,7 @@ func (self *Func) EmitVal(v gapl.Val, form gapl.Form, in []gapl.Form, vm *gapl.V
 		}
 	}
 
-	vm.Emit(ops.NewCall(form, v.Data().(*gapl.Func), gapl.CallFlags{Check: true}))
+	vm.Emit(ops.NewCall(form, v.Data().(*gapl.Func), gapl.CallFlags{Check: !litArgs}))
 	return in, nil
 }
 
