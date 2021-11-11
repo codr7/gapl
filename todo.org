@@ -1,12 +1,11 @@
-* add macros
-** Emit func
-* add +/- macros
-** rename math.+/- to add/sub
-** add inc/dec ops
+* check literal (Val != nil) args in Func.EmitVal
+** disable check flag if all literals
 * add if macro
 * add group reader
 * add func macro
 * fib bench
+* --
+* add inc op/support like dec
 
 func fib (n Int) (Int) 
   if < n 2 n + fib - n 1 fib - n 2

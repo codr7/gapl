@@ -13,6 +13,14 @@ func NewArg(name string, _type Type) Arg {
 	return Arg{name: name, _type: _type}
 }
 
+func (self Arg) Name() string {
+	return self.name
+}
+
+func (self Arg) Type() Type {
+	return self._type
+}
+
 type Args []Arg
 
 func (self Args) Add(name string, _type Type) Args {
@@ -50,6 +58,10 @@ func (self *Func) Init(name string, args Args, rets Rets, body FuncBody) *Func {
 
 func (self *Func) Name() string {
 	return self.name
+}
+
+func (self *Func) Args() Args {
+	return self.args
 }
 
 func (self *Func) String() string {

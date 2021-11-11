@@ -39,6 +39,11 @@ func Int(in *bufio.Reader, pos *gapl.Pos, vm *gapl.Vm) (gapl.Form, error) {
 	}
 
 	s := buf.String()
+
+	if s == "-" {
+		return forms.NewId(fpos, s), nil
+	}
+	
 	n, e := strconv.ParseInt(s, 10, 64)
 
 	if e != nil {

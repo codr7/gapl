@@ -33,17 +33,38 @@ func main() {
 	vm.IntType.Init("Int")
 	abcLib.Bind("Int", &metaType, vm.IntType)
 
+	var macroType types.Macro
+	macroType.Init("Macro", &anyType)
+	abcLib.Bind("Macro", &metaType, &macroType)
+
 	var mathLib gapl.Lib
 	mathLib.Init("math")
 
+	mathLib.Bind("if", &macroType, new(gapl.Macro).Init("if", 3, 
+		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
+			//c, x, y := in[0], in[1], in[2]
+			return in[3:], nil
+		}))
+		
 	mathLib.Bind("+", &funcType, new(gapl.Func).Init("+",
 		gapl.Args{}.Add("x", vm.IntType).Add("y", vm.IntType),
 		gapl.Rets{}.Add(vm.IntType),
 		func(self *gapl.Func, flags gapl.CallFlags, pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
-			stack := &vm.State().Stack
+			stack := vm.Stack()
 			y := stack.Pop()
 			x := stack.Peek()
 			x.Set(x.Type(), x.Data().(int) + y.Data().(int))
+			return pc, nil
+		}))
+
+	mathLib.Bind("-", &funcType, new(gapl.Func).Init("-",
+		gapl.Args{}.Add("x", vm.IntType).Add("y", vm.IntType),
+		gapl.Rets{}.Add(vm.IntType),
+		func(self *gapl.Func, flags gapl.CallFlags, pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
+			stack := vm.Stack()
+			y := stack.Pop()
+			x := stack.Peek()
+			x.Set(x.Type(), x.Data().(int) - y.Data().(int))
 			return pc, nil
 		}))
 

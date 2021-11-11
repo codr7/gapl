@@ -1,5 +1,25 @@
 package gapl
 
+import (
+	"fmt"
+)
+
+type EEmit struct {
+	E
+	pos Pos
+}
+
+func NewEEmit(pos Pos, message string, args...interface{}) EEmit {
+	var self EEmit
+	self.Init(message, args...)
+	self.pos = pos
+	return self
+}
+
+func (self EEmit) Error() string {
+	return fmt.Sprintf("Error in %v: %v", self.pos, self.message)
+}
+
 type Form interface {
 	Pos() Pos
 	Emit(in []Form, vm *Vm) ([]Form, error)
