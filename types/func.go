@@ -9,7 +9,7 @@ type Func struct {
 	Basic
 }
 
-func (self *Func) EmitVal(v gapl.Val, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
+func (self Func) EmitVal(v gapl.Val, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 	f := v.Data().(*gapl.Func)
 
 	if f.Name() == "-" && f.Args()[0].Type() == vm.IntType && f.Args()[1].Type() == vm.IntType {

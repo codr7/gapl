@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/codr7/gapl"
+	"github.com/codr7/gapl/ops"
 	"github.com/codr7/gapl/readers"
 	"github.com/codr7/gapl/tools"
 	"github.com/codr7/gapl/types"
@@ -25,6 +26,12 @@ func main() {
 	abcLib.Bind("Any", &metaType, &anyType)
 	abcLib.Bind("Meta", &metaType, &metaType)
 
+	var boolType types.Bool
+	boolType.Init("Bool", &anyType)
+	abcLib.Bind("Bool", &metaType, &boolType)
+	abcLib.Bind("T", &boolType, true)
+	abcLib.Bind("F", &boolType, false)
+	
 	var funcType types.Func
 	funcType.Init("Func", &anyType)
 	abcLib.Bind("Func", &metaType, &funcType)
@@ -42,8 +49,28 @@ func main() {
 
 	mathLib.Bind("if", &macroType, new(gapl.Macro).Init("if", 3, 
 		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
-			//c, x, y := in[0], in[1], in[2]
-			return in[3:], nil
+			cond, left, right := in[0], in[1], in[2]
+			var err error
+
+			if in, err = cond.Emit(in[3:], vm); err != nil {
+				return in, err
+			}
+			
+			op := vm.Emit(ops.NewBranch(form, -1)).(*ops.Branch)
+			
+			if in, err = left.Emit(in, vm); err != nil {
+				return in, err
+			}
+			
+			skipRight := vm.Emit(ops.NewJump(form, -1)).(*ops.Jump)
+			op.RightPc = vm.Pc()
+			
+			if in, err = right.Emit(in, vm); err != nil {
+				return in, err
+			}
+
+			skipRight.Pc = vm.Pc()
+			return in, nil
 		}))
 		
 	mathLib.Bind("+", &funcType, new(gapl.Func).Init("+",

@@ -1,6 +1,3 @@
-* add Bool type
-* add Type.TrueVal() bool
-* add if macro
 * add group reader
 * add func macro
 * add frames

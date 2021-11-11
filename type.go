@@ -13,6 +13,7 @@ type Type interface {
 
 	DumpVal(v Val) string
 	EmitVal(v Val, form Form, in []Form, vm *Vm) ([]Form, error)
+	TrueVal(v Val) bool
 }
 
 type BasicType struct {
@@ -29,15 +30,15 @@ func (self *BasicType) Init(name string, parentTypes...Type) {
 	}
 }
 
-func (self *BasicType) Name() string {
+func (self BasicType) Name() string {
 	return self.name
 }
 
-func (self *BasicType) String() string {
+func (self BasicType) String() string {
 	return self.Name()
 }
 
-func (self *BasicType) AddParentTypes(dst map[Type]Type, dpt Type) {
+func (self BasicType) AddParentTypes(dst map[Type]Type, dpt Type) {
 	for pt, _ := range self.parentTypes {
 		dst[pt] = dpt
 	}
@@ -48,13 +49,18 @@ func (self *BasicType) Derive(other Type) {
 	other.AddParentTypes(self.parentTypes, other)
 }
 
-func (self *BasicType) GetParentType(other Type) Type {
+func (self BasicType) GetParentType(other Type) Type {
 	return self.parentTypes[other]
 }
 
-func (self *BasicType) DumpVal(v Val) string {
+func (self BasicType) DumpVal(v Val) string {
 	return fmt.Sprintf("%v", v.Data())
 }
+
+func (self BasicType) TrueVal(v Val) bool {
+	return true
+}
+
 
 func Isa(child, parent Type) bool {
 	return child == parent || child.GetParentType(parent) != nil

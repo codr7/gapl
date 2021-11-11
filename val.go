@@ -29,3 +29,7 @@ func (self Val) Dump() string {
 func (self Val) Emit(form Form, in []Form, vm *Vm) ([]Form, error) {
 	return self._type.EmitVal(self, form, in, vm)
 }
+
+func (self Val) True() bool {
+	return self._type.TrueVal(self)
+}

@@ -51,8 +51,9 @@ func (self *Vm) Pc() Pc {
 	return Pc(len(self.code))
 }
 
-func (self *Vm) Emit(op Op) {
+func (self *Vm) Emit(op Op) Op{
 	self.code = append(self.code, op)
+	return op
 }
 
 func (self *Vm) NewState() {
