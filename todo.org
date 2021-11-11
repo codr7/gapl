@@ -5,8 +5,16 @@
 ** add Frame.target/retPc
 ** add Vm.NewFrame()
 ** add Vm.EndFrame()
-* fib bench
+* fibrec
+** add Bench op
+* add dd support to id emit
+** add Drop op
+* add |drop
 * --
+* fibtail bench
+* add |tco
+* add Equal op
+** trap = where y has Val() in Func emit
 * add inc op/support like dec
 
 func fib (n Int) (Int) 

@@ -13,6 +13,7 @@ type Type interface {
 
 	DumpVal(v Val) string
 	EmitVal(v Val, form Form, in []Form, vm *Vm) ([]Form, error)
+	EqualVals(x, y Val) bool
 	TrueVal(v Val) bool
 }
 
@@ -55,6 +56,10 @@ func (self BasicType) GetParentType(other Type) Type {
 
 func (self BasicType) DumpVal(v Val) string {
 	return fmt.Sprintf("%v", v.Data())
+}
+
+func (self BasicType) EqualVals(x, y Val) bool {
+	return x.Data() == y.Data()
 }
 
 func (self BasicType) TrueVal(v Val) bool {

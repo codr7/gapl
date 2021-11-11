@@ -30,6 +30,10 @@ func (self Val) Emit(form Form, in []Form, vm *Vm) ([]Form, error) {
 	return self._type.EmitVal(self, form, in, vm)
 }
 
+func (self Val) Equal(other Val) bool {
+	return self._type == other._type && self._type.EqualVals(self, other)
+}
+
 func (self Val) True() bool {
 	return self._type.TrueVal(self)
 }
