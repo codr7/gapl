@@ -1,15 +1,11 @@
 * add func macro
-* add frames
-** add Vm.frame
-** add Frame.target/retPc
-** add Vm.New/EndFrame()
-*** push/pop state
 * fibrec
 ** add Bench op
 * add dd support to id emit
 ** add Drop op
 * add |drop
 * --
+* try replacing state slice with parentState like Scope
 * fibtail bench
 * add |tco
 * add Equal op

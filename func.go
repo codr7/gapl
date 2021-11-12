@@ -64,6 +64,10 @@ func (self *Func) Args() Args {
 	return self.args
 }
 
+func (self *Func) Rets() Rets {
+	return self.rets
+}
+
 func (self *Func) String() string {
 	var buf strings.Builder
 	buf.WriteString("Func(")
@@ -76,14 +80,15 @@ func (self *Func) String() string {
 
 func (self *Func) Applicable(stack *Stack) bool {
 	nargs := len(self.args)
-	nits := len(stack.Items)
+	its := stack.Items()
+	nits := len(its)
 	
 	if nits < nargs {
 		return false
 	}
 	
 	for i := 0; i < nargs; i++ {
-		if !Isa(stack.Items[nits-i-1].Type(), self.args[nargs-i-1]._type) {
+		if !Isa(its[nits-i-1].Type(), self.args[nargs-i-1]._type) {
 			return false
 		}
 	}

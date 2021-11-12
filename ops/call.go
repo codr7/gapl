@@ -16,7 +16,7 @@ func NewCall(form gapl.Form, target *gapl.Func, flags gapl.CallFlags) *Call {
 }
 
 func (self Call) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
-	stack := &vm.State().Stack
+	stack := vm.Stack()
 	
 	if self.flags.Check && !self.target.Applicable(stack) {
 		return pc, fmt.Errorf("Not applicable: %v %v", self.target, stack)
