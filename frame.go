@@ -35,15 +35,17 @@ func (self *Frame) RestoreState(vm *Vm) error {
 	rets := self.target.Rets()
 		
 	if len(rets) > 0 {
-		if src.stack.Len() < len(rets) {
-			return fmt.Errorf("Not enough return values: %v\n%v", len(rets), src.stack)
-		}
-			
-		for i, rt := range rets {
-			st := src.stack.Items()[src.stack.Len()-i-1].Type()
-			
-			if !Isa(st, rt) {
-				return fmt.Errorf("Wrong return type: %v %v", st, rt)
+		if self.flags.Check {
+			if src.stack.Len() < len(rets) {
+				return fmt.Errorf("Missing return values: %v %v", len(rets), src.stack)
+			}
+
+			for i, rt := range rets {
+				st := src.stack.Items()[src.stack.Len()-i-1].Type()
+				
+				if !Isa(st, rt) {
+					return fmt.Errorf("Wrong type returned: %v %v", st, rt)
+				}
 			}
 		}
 

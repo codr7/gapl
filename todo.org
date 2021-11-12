@@ -1,11 +1,11 @@
 * add func macro
+** add ret op
 * fibrec
 ** add Bench op
 * add dd support to id emit
 ** add Drop op
 * add |drop
 * --
-* try replacing state slice with parentState like Scope
 * fibtail bench
 * add |tco
 * add Equal op
