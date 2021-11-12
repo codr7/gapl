@@ -55,3 +55,8 @@ func (self Func) EmitVal(v gapl.Val, form gapl.Form, in []gapl.Form, vm *gapl.Vm
 	return in, nil
 }
 
+func (self Func) LiteralVal(v gapl.Val) *gapl.Val {
+	return nil
+}
+
+

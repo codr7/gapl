@@ -34,6 +34,10 @@ func (self Val) Equal(other Val) bool {
 	return self._type == other._type && self._type.EqualVals(self, other)
 }
 
+func (self Val) Literal() *Val {
+	return self._type.LiteralVal(self)
+}
+
 func (self Val) True() bool {
 	return self._type.TrueVal(self)
 }

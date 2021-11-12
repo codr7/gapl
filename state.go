@@ -12,3 +12,7 @@ func (self *State) Init(parentState *State) *State {
 	self.parentState = parentState
 	return self
 }
+
+func (self State) Stack() *Stack {
+	return &self.stack
+}

@@ -16,6 +16,10 @@ func NewGroup(pos gapl.Pos, members...gapl.Form) *Group {
 	return self
 }
 
+func (self Group) Members() []gapl.Form {
+	return self.members
+}
+
 func (self *Group) Emit(in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 	for _, m := range self.members {
 		var err error

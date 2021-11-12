@@ -1,6 +1,7 @@
 package ops
 
 import (
+	"fmt"
 	"github.com/codr7/gapl"
 )
 
@@ -16,3 +17,8 @@ func NewJump(form gapl.Form, pc gapl.Pc) *Jump {
 func (self Jump) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	return self.Pc, nil
 }
+
+func (self Jump) String() string {
+	return fmt.Sprintf("JUMP %v", self.Pc)
+}
+

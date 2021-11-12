@@ -1,6 +1,7 @@
 package ops
 
 import (
+	"fmt"
 	"github.com/codr7/gapl"
 )
 
@@ -16,4 +17,8 @@ func NewPush(form gapl.Form, _type gapl.Type, data interface{}) *Push {
 func (self Push) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	vm.Push(self.val.Type(), self.val.Data())
 	return pc+1, nil
+}
+
+func (self Push) String() string {
+	return fmt.Sprintf("PUSH %v", self.val)
 }

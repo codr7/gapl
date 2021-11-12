@@ -10,7 +10,7 @@ const VERSION = 1
 type Pc int
 type Reg int
 
-func (self Reg) String() string { return fmt.Sprintf("Reg(%v)", self) }
+func (self Reg) String() string { return fmt.Sprintf("Reg(%v)", int(self)) }
 
 type Vm struct {
 	Readers []Reader
@@ -53,14 +53,12 @@ func (self *Vm) ReadForm(in *bufio.Reader, pos *Pos) (Form, error) {
 
 func (self *Vm) NewFrame(target *Func, flags CallFlags, retPc Pc) *Frame {
 	self.frame = new(Frame).Init(self.frame, target, flags, retPc)
-	self.frame.CaptureState(self)
 	return self.frame
 }
 
 func (self *Vm) EndFrame() *Frame {
 	f := self.frame
 	self.frame = self.frame.parentFrame
-	f.RestoreState(self)
 	return f
 }
 
@@ -92,8 +90,16 @@ func (self *Vm) State() *State {
 	return self.state
 }
 
-func (self *Vm) Regs() []Val {
-	return self.State().regs[:]
+func (self *Vm) Load(reg Reg) {
+	state := self.State()
+	val := state.regs[reg]
+	state.stack.Push(val.Type(), val.Data())
+}
+
+func (self *Vm) Store(reg Reg) {
+	state := self.State()
+	val := state.stack.Pop()
+	state.regs[reg] = val
 }
 
 func (self *Vm) Stack() *Stack {
@@ -112,9 +118,14 @@ func (self *Vm) Pop() Val {
 	return self.State().stack.Pop()
 }
 
-func (self *Vm) BindReg(key string) int {
+func (self *Vm) BindReg(key string) Reg {
 	scope := self.Scope()
-	reg := scope.regCount
+
+	if found := scope.Find(key); found != nil {
+		return found.Data().(Reg)
+	}
+	
+	reg := Reg(scope.regCount)
 	scope.regCount++
 	scope.Bind(key, self.RegType, reg)
 	return reg
@@ -124,6 +135,7 @@ func (self *Vm) Eval(pc Pc) error {
 	var err error
 	
 	for err == nil {
+		//fmt.Printf("%v %v\n", self.code[pc], *self.Stack())
 		pc, err = self.code[pc].Eval(pc, self)
 	}
 

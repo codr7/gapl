@@ -29,7 +29,7 @@ func (self *Macro) String() string {
 
 func (self *Macro) Emit(form Form, in []Form, vm *Vm) ([]Form, error) {
 	if len(in) < self.argCount {
-		return in, NewEEmit(form.Pos(), "Not enough args: %v %v/%v", self.name, len(in), self.argCount)
+		return in, NewEEmit(form.Pos(), "Not enough arguments: %v %v/%v", self.name, len(in), self.argCount)
 	}
 	
 	return self.body(self, form, in, vm)

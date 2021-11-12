@@ -39,7 +39,7 @@ type CallFlags struct {
 	Tco bool
 }
 
-type FuncBody = func(self *Func, flags CallFlags, pc Pc, vm *Vm) (Pc, error)
+type FuncBody = func(self *Func, flags CallFlags, retPc Pc, vm *Vm) (Pc, error)
 
 type Func struct {
 	name string
@@ -54,6 +54,17 @@ func (self *Func) Init(name string, args Args, rets Rets, body FuncBody) *Func {
 	self.rets = rets
 	self.body = body
 	return self
+}
+
+func (self *Func) CompileBody(startPc Pc) {	
+	self.body = func(self *Func, flags CallFlags, retPc Pc, vm *Vm) (Pc, error) {
+		if !flags.Tco {
+			f := vm.NewFrame(self, flags, retPc)
+			f.CaptureState(vm)
+		}
+		
+		return startPc, nil
+	}
 }
 
 func (self *Func) Name() string {
@@ -96,6 +107,6 @@ func (self *Func) Applicable(stack *Stack) bool {
 	return true
 }
 
-func (self *Func) Call(flags CallFlags, pc Pc, vm *Vm) (Pc, error) {
-	return self.body(self, flags, pc, vm)
+func (self *Func) Call(flags CallFlags, retPc Pc, vm *Vm) (Pc, error) {
+	return self.body(self, flags, retPc, vm)
 }

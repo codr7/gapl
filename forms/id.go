@@ -17,6 +17,10 @@ func NewId(pos gapl.Pos, name string) *Id {
 	return self
 }
 
+func (self Id) Name() string {
+	return self.name
+}
+
 func (self *Id) Emit(in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 	v := vm.Scope().Find(self.name)
 
@@ -28,5 +32,5 @@ func (self *Id) Emit(in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 }
 
 func (self Id) Val(vm *gapl.Vm) *gapl.Val {
-	return vm.Scope().Find(self.name)
+	return vm.Scope().Find(self.name).Literal()
 }

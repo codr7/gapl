@@ -1,11 +1,9 @@
-* add func macro
-** add ret op
 * fibrec
 ** add Bench op
 * add dd support to id emit
 ** add Drop op
 * add |drop
-* --
+* test lambda
 * fibtail bench
 * add |tco
 * add Equal op

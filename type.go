@@ -14,6 +14,7 @@ type Type interface {
 	DumpVal(v Val) string
 	EmitVal(v Val, form Form, in []Form, vm *Vm) ([]Form, error)
 	EqualVals(x, y Val) bool
+	LiteralVal(v Val) *Val
 	TrueVal(v Val) bool
 }
 
@@ -62,10 +63,13 @@ func (self BasicType) EqualVals(x, y Val) bool {
 	return x.Data() == y.Data()
 }
 
+func (self BasicType) LiteralVal(v Val) *Val {
+	return &v
+}
+
 func (self BasicType) TrueVal(v Val) bool {
 	return true
 }
-
 
 func Isa(child, parent Type) bool {
 	return child == parent || child.GetParentType(parent) != nil

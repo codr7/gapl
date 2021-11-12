@@ -1,6 +1,7 @@
 package ops
 
 import (
+	"fmt"
 	"github.com/codr7/gapl"
 )
 
@@ -21,4 +22,8 @@ func (self Branch) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	}
 	
 	return self.RightPc, nil
+}
+
+func (self Branch) String() string {
+	return fmt.Sprintf("BRANCH %v", self.RightPc)
 }

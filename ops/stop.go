@@ -15,3 +15,7 @@ func (self Stop) Error() string {
 func (self Stop) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	return pc, self
 }
+
+func (self Stop) String() string {
+	return "STOP"
+}
