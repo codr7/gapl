@@ -22,8 +22,8 @@ The provided syntax is relatively simple and trivial to customize/replace.
 
 - Forms are separated by whitespace and read left to right.
 - The input stream is consumed until all arguments have been collected (recursively) or `EOF`.
-- Forms may be grouped for macro processing and/or readability using parens.
-- All calls including operators are prefix by default.
+- Forms may be grouped using parens.
+- All calls including operators are prefix.
 - The stack is exposed to user code like in Forth, `_` may be used to indicate the top value.
 
 ### performance
