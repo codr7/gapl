@@ -9,7 +9,7 @@ may the Source be with You
     if < n 2 n + fib - n 1 fib - n 2
 
 []
-  fib 10
+  bench 100 fib 20
 
 [55]
 ```
@@ -21,7 +21,23 @@ g/>pl is a scripting language/toolkit designed to complement Go.
 The provided syntax is relatively simple and trivial to customize/replace.
 
 - Forms are separated by whitespace and read left to right.
-- The input stream is consumed until all arguments have been collected (recursively) or `EOF`, as a result there is no support for optional/variable arguments.
+- The input stream is consumed until all arguments have been collected (recursively) or `EOF`.
 - Forms may be grouped for macro processing and/or readability using parens.
 - All calls including operators are prefix by default.
-- The stack is exposed to user code like Forth, `_` may be used to indicate the top value.
+- The stack is exposed to user code like in Forth, `_` may be used to indicate the top value.
+
+### performance
+
+g/>pl currently runs around 6 times as slow as Python3.
+
+`bench` runs the specified body `n` times and returns elapsed time in milliseconds.
+
+```
+  func fib (n Int) (Int) 
+    if < n 2 n + fib - n 1 fib - n 2
+
+[]
+  bench 100 fib 20
+
+[1406]
+```
