@@ -3,6 +3,7 @@ package forms
 import (
 	"fmt"
 	"github.com/codr7/gapl"
+	"github.com/codr7/gapl/ops"
 )
 
 type Id struct {
@@ -21,7 +22,22 @@ func (self Id) Name() string {
 	return self.name
 }
 
+func isDrop(name string) bool {
+	for _, c := range name {
+		if c != 'd' {
+			return false
+		}	
+	}
+
+	return true
+}
+
 func (self *Id) Emit(in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
+	if isDrop(self.name) {
+		vm.Emit(ops.NewDrop(self, len(self.name)))
+		return in, nil
+	}
+
 	v := vm.Scope().Find(self.name)
 
 	if v == nil {
@@ -32,5 +48,11 @@ func (self *Id) Emit(in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 }
 
 func (self Id) Val(vm *gapl.Vm) *gapl.Val {
-	return vm.Scope().Find(self.name).Literal()
+	found := vm.Scope().Find(self.name)
+
+	if found == nil {
+		return nil
+	}
+	
+	return found.Literal()
 }

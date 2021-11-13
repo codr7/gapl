@@ -1,15 +1,13 @@
 ## g/>pl
 
 ```
-g/>pl 1
+g/>pl 2
 press Return on empty line to Eval
 may the Source be with You
 
   func fib (n Int) (Int) 
     if < n 2 n + fib - n 1 fib - n 2
-
-[]
-  bench 100 fib 20
+  fib 10
 
 [55]
 ```
@@ -36,6 +34,18 @@ The provided syntax is relatively simple and trivial to customize/replace.
 []
 ```
 
+### the stack
+`d` may be used to drop the top value.
+
+```
+  1 2 3 4 5
+
+[1 2 3 4 5]
+  dd
+
+[1 2 3]
+```
+
 ### performance
 g/>pl currently runs around 6 times as slow as Python3.
 
@@ -44,9 +54,7 @@ g/>pl currently runs around 6 times as slow as Python3.
 ```
   func fib (n Int) (Int) 
     if < n 2 n + fib - n 1 fib - n 2
-
-[]
-  bench 100 fib 20
+  bench 100 (fib 20 d)
 
 [1406]
 ```

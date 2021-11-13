@@ -1,5 +1,3 @@
-* add dd support to id emit
-** add Drop op
 * add |drop
 * test lambda
 * fibtail bench

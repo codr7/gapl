@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-const VERSION = 1
+const VERSION = 2
 
 type Pc int
 type Reg int

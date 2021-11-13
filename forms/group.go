@@ -21,10 +21,12 @@ func (self Group) Members() []gapl.Form {
 }
 
 func (self *Group) Emit(in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
-	for _, m := range self.members {
+	temp := self.members[:]
+	
+	for len(temp) > 0 {
 		var err error
 
-		if in, err = m.Emit(in, vm); err != nil {
+		if temp, err = temp[0].Emit(temp[1:], vm); err != nil {
 			return in, err
 		}
 	}
