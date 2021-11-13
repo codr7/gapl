@@ -35,7 +35,7 @@ func (self *Stack) Peek() *Val {
 func (self *Stack) Pop() Val {
 	i := len(self.items)-1
 	it := self.items[i]
-	self.items = self.items[:i];
+	self.items = self.items[:i]
 	return it
 }
 

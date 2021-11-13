@@ -22,12 +22,21 @@ The provided syntax is relatively simple and trivial to customize/replace.
 
 - Forms are separated by whitespace and read left to right.
 - The input stream is consumed until all arguments have been collected (recursively) or `EOF`.
-- Forms may be grouped using parens.
 - All calls including operators are prefix.
 - The stack is exposed to user code like in Forth, `_` may be used to indicate the top value.
+```
+  _
+  
+[]
+```
+- Forms may be grouped using parens.
+```
+  (_ _ _)
+  
+[]
+```
 
 ### performance
-
 g/>pl currently runs around 6 times as slow as Python3.
 
 `bench` runs the specified body `n` times and returns elapsed time in milliseconds.

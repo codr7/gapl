@@ -33,7 +33,7 @@ func (self *Vm) NewScope() *Scope {
 
 func (self *Vm) EndScope() *Scope {
 	s := self.scope
-	self.scope = self.scope.parentScope
+	self.scope = s.parentScope
 	return s
 }
 
@@ -58,7 +58,7 @@ func (self *Vm) NewFrame(target *Func, flags CallFlags, retPc Pc) *Frame {
 
 func (self *Vm) EndFrame() *Frame {
 	f := self.frame
-	self.frame = self.frame.parentFrame
+	self.frame = f.parentFrame
 	return f
 }
 
@@ -82,7 +82,7 @@ func (self *Vm) NewState() *State {
 
 func (self *Vm) EndState() *State {
 	s := self.state
-	self.state = self.state.parentState
+	self.state = s.parentState
 	return s
 }
 

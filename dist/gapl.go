@@ -45,6 +45,29 @@ func main() {
 	macroType.Init("Macro", &anyType)
 	abcLib.Bind("Macro", &metaType, &macroType)
 
+	abcLib.Bind("_", &macroType, new(gapl.Macro).Init("_", 0, 
+		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
+			return in, nil
+		}))
+	
+	abcLib.Bind("bench", &macroType, new(gapl.Macro).Init("bench", 2, 
+		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
+			var err error
+			if in, err = in[0].Emit(in[1:], vm); err != nil {
+				return in, err
+			}
+
+			op := vm.Emit(ops.NewBench(form, -1)).(*ops.Bench)
+			
+			if in, err = in[0].Emit(in[1:], vm); err != nil {
+				return in, err
+			}
+
+			vm.Emit(&ops.STOP)
+			op.EndPc = vm.Pc()
+			return in, nil
+		}))
+
 	abcLib.Bind("func", &macroType, new(gapl.Macro).Init("func", 3, 
 		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 			f := in[0]
@@ -121,29 +144,8 @@ func main() {
 			_func.CompileBody(startPc)
 			return in, nil
 		}))
-	
-	var mathLib gapl.Lib
-	mathLib.Init("math")
-
-	mathLib.Bind("bench", &macroType, new(gapl.Macro).Init("bench", 2, 
-		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
-			var err error
-			if in, err = in[0].Emit(in[1:], vm); err != nil {
-				return in, err
-			}
-
-			op := vm.Emit(ops.NewBench(form, -1)).(*ops.Bench)
-			
-			if in, err = in[0].Emit(in[1:], vm); err != nil {
-				return in, err
-			}
-
-			vm.Emit(&ops.STOP)
-			op.EndPc = vm.Pc()
-			return in, nil
-		}))
-	
-	mathLib.Bind("if", &macroType, new(gapl.Macro).Init("if", 3, 
+		
+	abcLib.Bind("if", &macroType, new(gapl.Macro).Init("if", 3, 
 		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 			var err error
 
@@ -167,7 +169,10 @@ func main() {
 			skipRight.Pc = vm.Pc()
 			return in, nil
 		}))
-		
+
+	var mathLib gapl.Lib
+	mathLib.Init("math")
+	
 	mathLib.Bind("+", &funcType, new(gapl.Func).Init("+",
 		gapl.Args{}.Add("x", vm.IntType).Add("y", vm.IntType),
 		gapl.Rets{}.Add(vm.IntType),
