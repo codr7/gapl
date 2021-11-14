@@ -8,11 +8,11 @@ type Stack struct {
 	items []Val
 }
 
-func (self Stack) Len() int {
+func (self *Stack) Len() int {
 	return len(self.items)
 }
 
-func (self Stack) Items() []Val {
+func (self *Stack) Items() []Val {
 	return self.items
 }
 

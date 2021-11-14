@@ -15,7 +15,7 @@ func NewBench(form gapl.Form, endPc gapl.Pc) *Bench {
 	return &Bench{form: form, EndPc: endPc}
 }
 
-func (self Bench) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
+func (self *Bench) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	reps := vm.Pop().Data().(int)
 	start := time.Now()
 
@@ -30,6 +30,6 @@ func (self Bench) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	return self.EndPc, nil
 }
 
-func (self Bench) String() string {
+func (self *Bench) String() string {
 	return fmt.Sprintf("BENCH %v", self.EndPc)
 }

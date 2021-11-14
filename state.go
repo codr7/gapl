@@ -7,6 +7,6 @@ type State struct {
 	stack Stack
 }
 
-func (self State) Stack() *Stack {
+func (self *State) Stack() *Stack {
 	return &self.stack
 }

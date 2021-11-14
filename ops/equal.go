@@ -14,7 +14,7 @@ func NewEqual(form gapl.Form, left, right *gapl.Val) *Equal {
 	return &Equal{form: form, Left: left, Right: right}
 }
 
-func (self Equal) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
+func (self *Equal) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	var left, right gapl.Val
 	
 	if self.Left == nil {
@@ -33,6 +33,6 @@ func (self Equal) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	return pc+1, nil
 }
 
-func (self Equal) String() string {
+func (self *Equal) String() string {
 	return fmt.Sprintf("EQUAL %v %v", self.Left, self.Right)
 }

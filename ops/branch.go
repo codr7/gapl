@@ -14,7 +14,7 @@ func NewBranch(form gapl.Form, rightPc gapl.Pc) *Branch {
 	return &Branch{form: form, RightPc: rightPc}
 }
 
-func (self Branch) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
+func (self *Branch) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	cond := vm.Pop()
 
 	if cond.True() {
@@ -24,6 +24,6 @@ func (self Branch) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	return self.RightPc, nil
 }
 
-func (self Branch) String() string {
+func (self *Branch) String() string {
 	return fmt.Sprintf("BRANCH %v", self.RightPc)
 }

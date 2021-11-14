@@ -15,7 +15,7 @@ func NewCall(form gapl.Form, target *gapl.Func, flags gapl.CallFlags) *Call {
 	return &Call{form: form, target: target, flags: flags}
 }
 
-func (self Call) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
+func (self *Call) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	stack := vm.Stack()
 	target := self.target
 
@@ -30,6 +30,6 @@ func (self Call) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	return target.Call(self.flags, pc+1, vm)
 }
 
-func (self Call) String() string {
+func (self *Call) String() string {
 	return fmt.Sprintf("CALL %v", self.target)
 }

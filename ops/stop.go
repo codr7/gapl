@@ -8,14 +8,14 @@ type Stop struct {}
 
 var STOP Stop
 
-func (self Stop) Error() string {
+func (self *Stop) Error() string {
 	return "STOP"
 }
 
-func (self Stop) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
+func (self *Stop) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	return pc, self
 }
 
-func (self Stop) String() string {
+func (self *Stop) String() string {
 	return "STOP"
 }
