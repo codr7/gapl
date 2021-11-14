@@ -38,6 +38,7 @@ type CallFlags struct {
 	CheckRets bool
 	Drop bool
 	Tco bool
+	Unsafe bool
 }
 
 type FuncBody = func(self *Func, flags CallFlags, retPc Pc, vm *Vm) (Pc, error)

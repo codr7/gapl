@@ -81,23 +81,11 @@ Call flags may be specified by prefixing with `|`.
 ##### |d(rop)
 Drops returned values.
 
-```
-  func foo () (Int) 42
-  foo|d
-  
-[]
-```
-
 ##### |t(co)
-Performs tail call optimization, may be used outside of tail position which causes an immediate return.
+Performs tail call optimization.
 
-```
-  func foo (n Int) (Int)
-    if = n 0 n foo|t - n 1
-  foo 42
-  
-[0]
-```
+##### |u(unsafe)
+Disables all type checks for the duration of the call.
 
 ### performance
 g/>pl currently runs around twice as slow as Python3.
@@ -111,9 +99,9 @@ $ python3 fibrec.py
 ```
   func fibrec (n Int) (Int) 
     if < n 2 n + fibrec - n 1 fibrec - n 2
-  bench 100 fibrec|d 20
+  bench 100 fibrec|d|u 20
 
-[539]
+[508]
 ```
 
 ```
@@ -124,7 +112,7 @@ $ python3 fibtail.py
 ```
   func fibtail (n Int a Int b Int) (Int)
     if = n 0 a if = n 1 b fibtail|t - n 1 b + a b
-  bench 10000 fibtail|d 70 0 1
+  bench 10000 fibtail|d|u 70 0 1
 
-[141]
+[131]
 ```

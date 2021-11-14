@@ -23,7 +23,7 @@ func (self Call) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 		target = stack.Pop().Data().(*gapl.Func)
 	}
 
-	if self.flags.CheckArgs && !target.Applicable(stack.Items()) {
+	if self.flags.CheckArgs && !vm.Unsafe() && !target.Applicable(stack.Items()) {
 		return pc, fmt.Errorf("Not applicable: %v %v", target, *stack)
 	}
 	

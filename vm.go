@@ -24,6 +24,7 @@ type Vm struct {
 	states [STATE_COUNT]State
 	stateCount int
 	code []Op
+	unsafeDepth int
 }
 
 func (self *Vm) AddReader(in...Reader) {
@@ -158,4 +159,8 @@ func (self *Vm) Eval(pc Pc) error {
 	}
 
 	return err
+}
+
+func (self *Vm) Unsafe() bool {
+	return self.unsafeDepth > 0
 }

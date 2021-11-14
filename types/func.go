@@ -45,6 +45,8 @@ func (self Func) EmitVal(v gapl.Val, form gapl.Form, in []gapl.Form, vm *gapl.Vm
 			flags.Drop = true
 		case "t", "tco":
 			flags.Tco = true
+		case "u", "unsafe":
+			flags.Unsafe = true
 		default:
 			return in, gapl.NewEEmit(f.Pos(), "Invalid call flag: %v", f)
 		}

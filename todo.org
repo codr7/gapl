@@ -1,4 +1,9 @@
-* fibtail bench
-* add inc op/support like dec
+* add |u flag
+** add vm.unsafeDepth
+** add vm.Unsafe() bool
+** disable checks if unsafe
+*** Frame.RestoreState
+*** Call.Eval
 * add let macro
 ** add bindings to readme
+* add inc op/support like dec

@@ -26,15 +26,20 @@ func (self *Frame) CaptureState(vm *Vm) {
 	}
 
 	dst.regs = src.regs
+
+	if self.flags.Unsafe {
+		vm.unsafeDepth++
+	}
 }
 
 func (self *Frame) RestoreState(vm *Vm) (Pc, error) {
 	rets := self.target.Rets()
-		
+	src := vm.EndState()
+	
 	if len(rets) > 0 {
-		src, dst := vm.EndState(), vm.State()
+		dst := vm.State()
 		
-		if self.flags.CheckRets {
+		if self.flags.CheckRets && !vm.Unsafe() {
 			if src.stack.Len() < len(rets) {
 				return -1, fmt.Errorf("Missing return values: %v %v", len(rets), src.stack)
 			}
@@ -54,5 +59,9 @@ func (self *Frame) RestoreState(vm *Vm) (Pc, error) {
 		}
 	}
 
+	if self.flags.Unsafe {
+		vm.unsafeDepth--
+	}
+	
 	return self.retPc, nil
 }
