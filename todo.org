@@ -1,1 +1,5 @@
-
+* add test macro
+* add tests/all.gapl
+* add tests/fibrec/tail.gapl from readme
+* add unit test to load & eval scripts
+* profile tests
