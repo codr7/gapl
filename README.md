@@ -100,7 +100,7 @@ Performs tail call optimization, may be used outside of tail position which caus
 ```
 
 ### performance
-g/>pl currently runs around 6 times as slow as Python3.
+g/>pl currently runs around twice as slow as Python3.
 
 `bench` runs the specified body `n` times and returns elapsed time in milliseconds.
 
@@ -109,5 +109,5 @@ g/>pl currently runs around 6 times as slow as Python3.
     if < n 2 n + fib - n 1 fib - n 2
   bench 100 fib|d 20
 
-[1344]
+[539]
 ```

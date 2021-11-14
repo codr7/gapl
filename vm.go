@@ -7,6 +7,7 @@ import (
 
 const VERSION = 3
 const FRAME_COUNT = 64
+const STATE_COUNT = 64
 
 type Pc int
 type Reg int
@@ -20,7 +21,8 @@ type Vm struct {
 	scope *Scope
 	frames [FRAME_COUNT]Frame
 	frameCount int
-	state *State
+	states [STATE_COUNT]State
+	stateCount int
 	code []Op
 }
 
@@ -84,18 +86,22 @@ func (self *Vm) Emit(op Op) Op{
 }
 
 func (self *Vm) NewState() *State {
-	self.state = new(State).Init(self.state)
-	return self.state
+	if self.stateCount == STATE_COUNT {
+		panic("No more states!")
+	}
+	
+	f := &self.states[self.stateCount]
+	self.stateCount++
+	return f 
 }
 
 func (self *Vm) EndState() *State {
-	s := self.state
-	self.state = s.parentState
-	return s
+	self.stateCount--
+	return &self.states[self.stateCount]
 }
 
 func (self *Vm) State() *State {
-	return self.state
+	return &self.states[self.stateCount-1]
 }
 
 func (self *Vm) Load(reg Reg) {
