@@ -2,9 +2,5 @@
 ** optional Right Val
 ** add = macro
 ** test tco example
-* test lambda
 * fibtail bench
-* add |tco
-* add Equal op
-** trap = where y has Val() in Func emit
 * add inc op/support like dec
