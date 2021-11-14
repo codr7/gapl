@@ -27,11 +27,11 @@ func main() {
 	abcLib.Bind("Any", &metaType, &anyType)
 	abcLib.Bind("Meta", &metaType, &metaType)
 
-	var boolType types.Bool
-	boolType.Init("Bool", &anyType)
-	abcLib.Bind("Bool", &metaType, &boolType)
-	abcLib.Bind("T", &boolType, true)
-	abcLib.Bind("F", &boolType, false)
+	vm.BoolType = new(types.Bool)
+	vm.BoolType.Init("Bool", &anyType)
+	abcLib.Bind("Bool", &metaType, vm.BoolType)
+	abcLib.Bind("T", vm.BoolType, true)
+	abcLib.Bind("F", vm.BoolType, false)
 	
 	var funcType types.Func
 	funcType.Init("Func", &anyType)
@@ -49,7 +49,34 @@ func main() {
 		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 			return in, nil
 		}))
-	
+
+	abcLib.Bind("=", &macroType, new(gapl.Macro).Init("=", 2, 
+		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
+			var err error
+			left := in[0]
+			in = in[1:]
+			var leftVal *gapl.Val
+			
+			if leftVal = left.Val(vm); leftVal == nil {
+				if in, err = left.Emit(in, vm); err != nil {
+					return in, err
+				}
+			}
+			
+			right := in[0]
+			in = in[1:]
+			var rightVal *gapl.Val
+			
+			if rightVal = right.Val(vm); rightVal == nil {
+				if in, err = right.Emit(in, vm); err != nil {
+					return in, err
+				}
+			}
+
+			vm.Emit(ops.NewEqual(form, leftVal, rightVal))
+			return in, nil
+		}))
+
 	abcLib.Bind("bench", &macroType, new(gapl.Macro).Init("bench", 2, 
 		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 			var err error
@@ -211,12 +238,12 @@ func main() {
 
 	mathLib.Bind("<", &funcType, new(gapl.Func).Init("<",
 		gapl.Args{}.Add("x", vm.IntType).Add("y", vm.IntType),
-		gapl.Rets{}.Add(&boolType),
+		gapl.Rets{}.Add(vm.BoolType),
 		func(self *gapl.Func, flags gapl.CallFlags, retPc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 			stack := vm.Stack()
 			y := stack.Pop()
 			x := stack.Peek()
-			x.Set(&boolType, x.Data().(int) < y.Data().(int))
+			x.Set(vm.BoolType, x.Data().(int) < y.Data().(int))
 			return retPc, nil
 		}))
 
