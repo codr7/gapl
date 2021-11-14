@@ -16,8 +16,7 @@ may the Source be with You
 g/>pl is a interpreted scripting language/toolkit designed to be embedded in and complement Go.
 
 ### status
-The functionality described in this document is implemented and verified to work but not much else at the moment.<br/>
-Any ideas for improvements are most welcome.
+The functionality described in this document is implemented and verified to work but not much else at the moment, any ideas for improvements are most welcome.
 
 ### syntax
 The provided syntax is relatively simple and trivial to customize/replace.
