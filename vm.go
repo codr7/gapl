@@ -6,6 +6,7 @@ import (
 )
 
 const VERSION = 3
+const FRAME_COUNT = 64
 
 type Pc int
 type Reg int
@@ -17,7 +18,8 @@ type Vm struct {
 	IntType, RegType Type
 	
 	scope *Scope
-	frame *Frame
+	frames [FRAME_COUNT]Frame
+	frameCount int
 	state *State
 	code []Op
 }
@@ -52,18 +54,23 @@ func (self *Vm) ReadForm(in *bufio.Reader, pos *Pos) (Form, error) {
 }
 
 func (self *Vm) NewFrame(target *Func, flags CallFlags, retPc Pc) *Frame {
-	self.frame = new(Frame).Init(self.frame, target, flags, retPc)
-	return self.frame
+	if self.frameCount == FRAME_COUNT {
+		panic("No more frames!")
+	}
+	
+	f := &self.frames[self.frameCount]
+	f.Init(target, flags, retPc)
+	self.frameCount++
+	return f 
 }
 
 func (self *Vm) EndFrame() *Frame {
-	f := self.frame
-	self.frame = f.parentFrame
-	return f
+	self.frameCount--
+	return &self.frames[self.frameCount]
 }
 
 func (self *Vm) Frame() *Frame {
-	return self.frame
+	return &self.frames[self.frameCount-1]
 }
 
 func (self *Vm) Pc() Pc {

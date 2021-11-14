@@ -5,14 +5,12 @@ import (
 )
 
 type Frame struct {
-	parentFrame *Frame
 	target *Func
 	flags CallFlags
 	retPc Pc
 }
 
-func (self *Frame) Init(parentFrame *Frame, target *Func, flags CallFlags, retPc Pc) *Frame {
-	self.parentFrame = parentFrame
+func (self *Frame) Init(target *Func, flags CallFlags, retPc Pc) *Frame {
 	self.target = target
 	self.flags = flags
 	self.retPc = retPc

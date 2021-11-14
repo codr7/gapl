@@ -4,3 +4,5 @@
 ** test tco example
 * fibtail bench
 * add inc op/support like dec
+* add let macro
+** add bindings to readme

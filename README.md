@@ -109,5 +109,5 @@ g/>pl currently runs around 6 times as slow as Python3.
     if < n 2 n + fib - n 1 fib - n 2
   bench 100 fib|d 20
 
-[1399]
+[1344]
 ```
