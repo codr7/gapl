@@ -34,7 +34,8 @@ func (self Rets) Add(_type Type) Rets {
 }
 
 type CallFlags struct {
-	Check bool
+	CheckArgs bool
+	CheckRets bool
 	Drop bool
 	Tco bool
 }
@@ -82,24 +83,47 @@ func (self *Func) Rets() Rets {
 func (self *Func) String() string {
 	var buf strings.Builder
 	buf.WriteString("Func(")
-	buf.WriteString(self.name)
-	buf.WriteString(" [")
-	buf.WriteString("] [")
-	buf.WriteString("])")
+	if self.name != "" {
+		buf.WriteString(self.name)
+		buf.WriteRune(' ')
+	}
+	
+	buf.WriteRune('(')
+
+	for i, a := range self.args {
+		if i > 0 {
+			buf.WriteRune(' ')
+		}
+		
+		buf.WriteString(a.name)
+		buf.WriteRune(' ')
+		buf.WriteString(a._type.Name())
+	}
+	
+	buf.WriteString(") (")
+
+	for i, rt := range self.rets {
+		if i > 0 {
+			buf.WriteRune(' ')
+		}
+		
+		buf.WriteString(rt.Name())
+	}
+
+	buf.WriteString("))")
 	return buf.String()
 }
 
-func (self *Func) Applicable(stack *Stack) bool {
+func (self *Func) Applicable(stack []Val) bool {
 	nargs := len(self.args)
-	its := stack.Items()
-	nits := len(its)
+	nvals := len(stack)
 	
-	if nits < nargs {
+	if nvals < nargs {
 		return false
 	}
 	
 	for i := 0; i < nargs; i++ {
-		if !Isa(its[nits-i-1].Type(), self.args[nargs-i-1]._type) {
+		if !Isa(stack[nvals-i-1].Type(), self.args[nargs-i-1]._type) {
 			return false
 		}
 	}

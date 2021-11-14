@@ -12,3 +12,6 @@ func (self Nop) Emit(in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 	return in, nil
 }
 
+func (self Nop) String() string {
+	return "_"
+}

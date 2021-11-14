@@ -36,7 +36,7 @@ func (self *Frame) RestoreState(vm *Vm) (Pc, error) {
 	if len(rets) > 0 {
 		src, dst := vm.EndState(), vm.State()
 		
-		if self.flags.Check {
+		if self.flags.CheckRets {
 			if src.stack.Len() < len(rets) {
 				return -1, fmt.Errorf("Missing return values: %v %v", len(rets), src.stack)
 			}

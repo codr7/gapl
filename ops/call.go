@@ -17,12 +17,17 @@ func NewCall(form gapl.Form, target *gapl.Func, flags gapl.CallFlags) *Call {
 
 func (self Call) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	stack := vm.Stack()
-	
-	if self.flags.Check && !self.target.Applicable(stack) {
-		return pc, fmt.Errorf("Not applicable: %v %v", self.target, stack)
+	target := self.target
+
+	if target == nil {
+		target = stack.Pop().Data().(*gapl.Func)
+	}
+
+	if self.flags.CheckArgs && !target.Applicable(stack.Items()) {
+		return pc, fmt.Errorf("Not applicable: %v %v", target, *stack)
 	}
 	
-	return self.target.Call(self.flags, pc+1, vm)
+	return target.Call(self.flags, pc+1, vm)
 }
 
 func (self Call) String() string {

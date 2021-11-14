@@ -2,6 +2,7 @@ package forms
 
 import (
 	"github.com/codr7/gapl"
+	"strings"
 )
 
 type Group struct {
@@ -32,4 +33,20 @@ func (self *Group) Emit(in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 	}
 
 	return in, nil
+}
+
+func (self Group) String() string {
+	var buf strings.Builder
+	buf.WriteRune('(')
+
+	for i, m := range self.members {
+		if i > 0 {
+			buf.WriteRune(' ')
+		}
+		
+		buf.WriteString(m.String())
+	}
+	
+	buf.WriteRune(')')
+	return buf.String()
 }

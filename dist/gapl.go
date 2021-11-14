@@ -68,6 +68,18 @@ func main() {
 			return in, nil
 		}))
 
+	abcLib.Bind("call", &macroType, new(gapl.Macro).Init("call", 1, 
+		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
+			var err error
+			
+			if in, err = in[0].Emit(in[1:], vm); err != nil {
+				return in, err
+			}
+
+			vm.Emit(ops.NewCall(form, nil, gapl.CallFlags{CheckArgs: true, CheckRets: true}))
+			return in, nil
+		}))
+	
 	abcLib.Bind("func", &macroType, new(gapl.Macro).Init("func", 3, 
 		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 			f := in[0]
@@ -127,7 +139,8 @@ func main() {
 			
 			skip := vm.Emit(ops.NewJump(form, -1)).(*ops.Jump)
 			startPc := vm.Pc()
-
+			vm.NewScope()
+			
 			for i := 0; i < len(args); i++ {
 				a := args[len(args)-i-1]
 				vm.Emit(ops.NewStore(form, vm.BindReg(a.Name()), a.Type()))
@@ -142,6 +155,7 @@ func main() {
 			vm.Emit(&ops.RET)
 			skip.Pc = vm.Pc()
 			_func.CompileBody(startPc)
+			vm.EndScope()
 			return in, nil
 		}))
 		

@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-const VERSION = 2
+const VERSION = 3
 
 type Pc int
 type Reg int
@@ -71,6 +71,7 @@ func (self *Vm) Pc() Pc {
 }
 
 func (self *Vm) Emit(op Op) Op{
+	//fmt.Printf(":%v\n", op)
 	self.code = append(self.code, op)
 	return op
 }

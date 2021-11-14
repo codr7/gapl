@@ -23,6 +23,7 @@ func (self EEmit) Error() string {
 type Form interface {
 	Pos() Pos
 	Emit(in []Form, vm *Vm) ([]Form, error)
+	String() string
 	Val(vm *Vm) *Val
 }
 

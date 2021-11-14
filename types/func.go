@@ -2,6 +2,7 @@ package types
 
 import (
 	"github.com/codr7/gapl"
+	"github.com/codr7/gapl/forms"
 	"github.com/codr7/gapl/ops"
 )
 
@@ -28,7 +29,28 @@ func (self Func) EmitVal(v gapl.Val, form gapl.Form, in []gapl.Form, vm *gapl.Vm
 		}
 	}
 
-	litArgs := true
+	var flags gapl.CallFlags
+	flags.CheckRets = true
+
+	
+	for len(in) > 0 {
+		f, ok := in[0].(*forms.Id)
+
+		if !ok || f.Name()[0] != '|' {
+			break
+		}
+
+		switch f.Name()[1:] {
+		case "d", "drop":
+			flags.Drop = true
+		case "t", "tco":
+			flags.Tco = true
+		default:
+			return in, gapl.NewEEmit(f.Pos(), "Invalid call flag: %v", f)
+		}
+
+		in = in[1:]
+	}
 	
 	for _, a := range f.Args() {
 		if len(in) == 0 {
@@ -36,10 +58,9 @@ func (self Func) EmitVal(v gapl.Val, form gapl.Form, in []gapl.Form, vm *gapl.Vm
 		}
 		
 		af := in[0]
-		av := af.Val(vm)
 
-		if av == nil {
-			litArgs = false
+		if av := af.Val(vm); av == nil {
+			flags.CheckArgs = true
 		} else if !gapl.Isa(av.Type(), a.Type()) {
 			return in, gapl.NewEEmit(af.Pos(), "Not applicable: %v %v", av.Type(), a.Type())
 		}
@@ -50,8 +71,8 @@ func (self Func) EmitVal(v gapl.Val, form gapl.Form, in []gapl.Form, vm *gapl.Vm
 			return in, err
 		}
 	}
-
-	vm.Emit(ops.NewCall(form, v.Data().(*gapl.Func), gapl.CallFlags{Check: !litArgs}))
+	
+	vm.Emit(ops.NewCall(form, v.Data().(*gapl.Func), flags))
 	return in, nil
 }
 

@@ -1,7 +1,6 @@
 package forms
 
 import (
-	"fmt"
 	"github.com/codr7/gapl"
 	"github.com/codr7/gapl/ops"
 )
@@ -41,7 +40,7 @@ func (self *Id) Emit(in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 	v := vm.Scope().Find(self.name)
 
 	if v == nil {
-		return in, fmt.Errorf("Unknown id: %v", self.name)
+		return in, gapl.NewEEmit(self.Pos(), "Unknown id: %v", self.name)
 	}
 	
 	return v.Emit(self, in, vm)
@@ -55,4 +54,8 @@ func (self Id) Val(vm *gapl.Vm) *gapl.Val {
 	}
 	
 	return found.Literal()
+}
+
+func (self Id) String() string {
+	return self.name
 }

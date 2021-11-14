@@ -22,7 +22,7 @@ func (self *Val) Set(_type Type, data interface{}) {
 	self.data = data
 }
 
-func (self Val) Dump() string {
+func (self Val) String() string {
 	return self._type.DumpVal(self)
 }
 

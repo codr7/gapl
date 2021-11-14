@@ -23,3 +23,7 @@ func (self *Literal) Emit(in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 func (self Literal) Val(vm *gapl.Vm) *gapl.Val {
 	return &self.val
 }
+
+func (self Literal) String() string {
+	return self.val.String()
+}
