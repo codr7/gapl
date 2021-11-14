@@ -21,18 +21,7 @@ The provided syntax is relatively simple and trivial to customize/replace.
 - Forms are separated by whitespace and read left to right.
 - The input stream is consumed until all arguments have been collected (recursively) or `EOF`.
 - All calls including operators are prefix.
-- The stack is exposed to user code like in Forth, `_` may be used to indicate the top value.
-```
-  _
-  
-[]
-```
 - Forms may be grouped using parens.
-```
-  (_ _ _)
-  
-[]
-```
 
 ### the stack
 `d` may be used to drop the top `n` values.
