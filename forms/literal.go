@@ -25,5 +25,5 @@ func (self Literal) Val(vm *gapl.Vm) *gapl.Val {
 }
 
 func (self Literal) String() string {
-	return self.val.String()
+	return self.val.Dump()
 }

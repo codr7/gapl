@@ -48,7 +48,7 @@ func (self Stack) String() string {
 			buf.WriteRune(' ')
 		}
 
-		buf.WriteString(self.items[i].String())
+		buf.WriteString(self.items[i].Dump())
 	}
 
 	buf.WriteRune(']')

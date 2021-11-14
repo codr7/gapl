@@ -102,12 +102,29 @@ Performs tail call optimization, may be used outside of tail position which caus
 ### performance
 g/>pl currently runs around twice as slow as Python3.
 
-`bench` runs the specified body `n` times and returns elapsed time in milliseconds.
+```
+$ cd bench
+$ python3 fibrec.py
+233
+```
 
 ```
-  func fib (n Int) (Int) 
-    if < n 2 n + fib - n 1 fib - n 2
-  bench 100 fib|d 20
+  func fibrec (n Int) (Int) 
+    if < n 2 n + fibrec - n 1 fibrec - n 2
+  bench 100 fibrec|d 20
 
 [539]
+```
+
+```
+$ python3 fibtail.py
+105
+```
+
+```
+  func fibtail (n Int a Int b Int) (Int)
+    if = n 0 a if = n 1 b fibtail|t - n 1 b + a b
+  bench 10000 fibtail|d 70 0 1
+
+[141]
 ```
