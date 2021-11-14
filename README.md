@@ -13,10 +13,10 @@ may the Source be with You
 ```
 
 ### intro
-g/>pl is a scripting language/toolkit designed to complement Go.
+g/>pl is a interpreted scripting language/toolkit designed to be embedded in and complement Go.
 
 ### status
-The functionality described in this document is implemented and verified to work but not much else at the moment.
+The functionality described in this document is implemented and verified to work but not much else at the moment.<br/>
 Any ideas for improvements are most welcome.
 
 ### syntax
