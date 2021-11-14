@@ -161,6 +161,10 @@ func main() {
 			if name == "" {
 				vm.Emit(ops.NewPush(form, &funcType, _func))
 			} else {
+				if v := scope.Find(name); v != nil {
+					return in, gapl.NewEEmit(form.Pos(), "Duplicate binding: %v %v", name, v.Dump())
+				}
+
 				scope.Bind(name, &funcType, _func)
 			}
 			
@@ -208,6 +212,35 @@ func main() {
 			}
 
 			skipRight.Pc = vm.Pc()
+			return in, nil
+		}))
+
+	abcLib.Bind("let", &macroType, new(gapl.Macro).Init("let", 2, 
+		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
+			key := in[0].(*forms.Id).Name()
+			valForm := in[1]
+			val := valForm.Val(vm)
+			in = in[2:]
+			
+			if val == nil {
+				reg := vm.BindReg(key)
+				var err error
+				
+				if in, err = valForm.Emit(in, vm); err != nil {
+					return in, err
+				}
+
+				vm.Emit(ops.NewStore(form, reg, nil))
+			} else {
+				scope := vm.Scope()
+				
+				if v := scope.Find(key); v != nil {
+					return in, gapl.NewEEmit(form.Pos(), "Duplicate binding: %v %v", key, v.Dump())
+				}
+				
+				scope.Bind(key, val.Type(), val.Data())
+			}
+			
 			return in, nil
 		}))
 

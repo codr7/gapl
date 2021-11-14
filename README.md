@@ -15,6 +15,10 @@ may the Source be with You
 ### intro
 g/>pl is a scripting language/toolkit designed to complement Go.
 
+### status
+The functionality described in this document is implemented and verified to work but not much else at the moment.
+Any ideas for improvements are most welcome.
+
 ### syntax
 The provided syntax is relatively simple and trivial to customize/replace.
 
@@ -35,6 +39,32 @@ The provided syntax is relatively simple and trivial to customize/replace.
 [1 2 3]
 ```
 
+### bindings
+Identifiers may be bound once per scope using `let`.
+
+```
+  let foo 42
+
+[]
+  let foo 42
+
+Error in repl at line 0, column 0: Duplicate binding: foo 42
+```
+
+`_` may be used as a placeholder to pop the stack.
+
+```
+  42
+
+[42]
+  let foo _
+
+[]
+  foo
+
+[42]
+```
+
 ### functions
 New functions may be defined using `func`.
 
@@ -47,7 +77,7 @@ New functions may be defined using `func`.
 [42]
 ```
 
-Anonymous functions may be created by simply omitting the name.
+Anonymous functions may be created by omitting the name.
 
 ```
   func () (Int) 42
@@ -75,6 +105,20 @@ Functions are lexically scoped,
 Error in repl at line 0, column 0: Unknown id: bar
 ```
 
+and capture their defining environment.
+
+```
+  func foo () (Func) (
+    let bar 42
+    func () (Int) bar
+  )
+
+[]
+  call foo
+
+[42]
+```
+
 #### call flags
 Call flags may be specified by prefixing with `|`.
 
@@ -88,7 +132,7 @@ Performs tail call optimization.
 Disables all type checks for the duration of the call.
 
 ### performance
-g/>pl currently runs around twice as slow as Python3.
+g/>pl currently runs around twice as slow as Python3, any ideas on how to make it run faster are most welcome.
 
 ```
 $ cd bench
