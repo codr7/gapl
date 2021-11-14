@@ -1,5 +1,3 @@
-* static State like Frame
-* static Stack
 * add EQUAL op
 ** optional Right Val
 ** add = macro
