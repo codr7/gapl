@@ -13,6 +13,22 @@ type Func struct {
 func (self Func) EmitVal(v gapl.Val, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 	f := v.Data().(*gapl.Func)
 
+	if f.Name() == "+" && f.Args()[0].Type() == vm.IntType && f.Args()[1].Type() == vm.IntType {
+		x, y := in[0], in[1]
+		xv, yv := x.Val(vm), y.Val(vm)
+
+		if yv != nil && yv.Type() == vm.IntType && (xv == nil || xv.Type() == vm.IntType) {
+			var err error
+
+			if in, err = x.Emit(in, vm); err != nil {
+				return in, err
+			}	
+
+			vm.Emit(ops.NewInc(form, yv.Data().(int)))
+			return in[2:], nil
+		}
+	}
+
 	if f.Name() == "-" && f.Args()[0].Type() == vm.IntType && f.Args()[1].Type() == vm.IntType {
 		x, y := in[0], in[1]
 		xv, yv := x.Val(vm), y.Val(vm)

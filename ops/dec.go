@@ -7,18 +7,18 @@ import (
 
 type Dec struct {
 	form gapl.Form
-	y int
+	delta int
 }
 
-func NewDec(form gapl.Form, y int) *Dec {	
-	return &Dec{form: form, y: y}
+func NewDec(form gapl.Form, delta int) *Dec {	
+	return &Dec{form: form, delta: delta}
 }
 
 func (self *Dec) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
-	vm.Push(vm.IntType, vm.Pop().Data().(int) - self.y)
+	vm.Push(vm.IntType, vm.Pop().Data().(int) - self.delta)
 	return pc+1, nil
 }
 
 func (self *Dec) String() string {
-	return fmt.Sprintf("DEC %v", self.y)
+	return fmt.Sprintf("DEC %v", self.delta)
 }
