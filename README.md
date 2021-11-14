@@ -80,12 +80,12 @@ New functions may be defined using `func`.
 Anonymous functions may be created by omitting the name.
 
 ```
-  func () (Int) 42
+  func () (Int Int) (35 7)
 
-[Func(() (Int))]
+[Func(() (Int Int))]
   call _
 
-[42]
+[35 7]
 ```
 
 Functions are lexically scoped,
