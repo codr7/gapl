@@ -1,3 +1,5 @@
+* track stateCount in Frame
+** capture/restore
 * add test macro
 * add tests/all.gapl
 * add tests/fibrec/tail.gapl from readme

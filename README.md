@@ -141,8 +141,8 @@ Disables all type checks for the duration of the call.
 `suspend` may be used to capture the evaluation of its argument within the current context as a value, and `resume` to continue from that point.
 
 ```
-  suspend 42
-
+  suspend _
+  42
 [Cont(1)]
   resume _
 

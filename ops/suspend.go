@@ -15,10 +15,11 @@ func NewSuspend(form gapl.Form, endPc gapl.Pc) *Suspend {
 }
 
 func (self *Suspend) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
-	c := new(gapl.Cont).Init(pc+1)
+	c := new(gapl.Cont).Init(self.EndPc)
 	c.Suspend(vm)
+	vm.NewState()
 	vm.Push(vm.ContType, c)
-	return self.EndPc, nil
+	return pc+1, nil
 }
 
 func (self *Suspend) String() string {
