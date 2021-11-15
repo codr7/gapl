@@ -93,9 +93,10 @@ func (self *Vm) NewState() *State {
 		panic("No more states!")
 	}
 	
-	f := &self.states[self.stateCount]
+	s := &self.states[self.stateCount]
+	s.Init()
 	self.stateCount++
-	return f 
+	return s
 }
 
 func (self *Vm) EndState() *State {

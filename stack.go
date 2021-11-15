@@ -39,6 +39,10 @@ func (self *Stack) Pop() Val {
 	return it
 }
 
+func (self *Stack) Reset() {
+	self.items = nil
+}
+
 func (self Stack) String() string {
 	var buf strings.Builder
 	buf.WriteRune('[')

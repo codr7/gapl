@@ -9,6 +9,11 @@ type State struct {
 	stack Stack
 }
 
+func (self *State) Init() *State {
+	self.stack.Reset()
+	return self
+}
+
 func (self *State) Stack() *Stack {
 	return &self.stack
 }
