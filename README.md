@@ -149,6 +149,15 @@ Disables all type checks for the duration of the call.
 [42]
 ```
 
+The continuation is passed on the stack to it's body.
+
+```
+  suspend resume _
+  42
+
+[42]
+```
+
 ### performance
 g/>pl currently runs around twice as slow as Python3, any ideas on how to make it run faster are most welcome.
 
