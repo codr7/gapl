@@ -25,6 +25,10 @@ func (self *Cont) Suspend(vm *Vm) {
 
 	self.states = vm.states
 	self.stateCount = vm.stateCount
+
+	vm.stateCount = 0
+	vm.NewState()
+	vm.frameCount = 0
 }
 
 func (self *Cont) Resume(vm *Vm) Pc {
