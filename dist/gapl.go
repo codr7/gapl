@@ -188,7 +188,7 @@ func main() {
 				return in, err
 			}
 			
-			vm.Emit(&ops.RET)
+			vm.Emit(ops.NewRet(form))
 			skip.Pc = vm.Pc()
 			_func.CompileBody(startPc)
 			vm.EndScope()
@@ -258,6 +258,12 @@ func main() {
 			}
 
 			vm.Emit(ops.NewResume(form))
+			return in, nil
+		}))
+
+	abcLib.Bind("ret", &macroType, new(gapl.Macro).Init("ret", 0, 
+		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
+			vm.Emit(ops.NewRet(form))
 			return in, nil
 		}))
 

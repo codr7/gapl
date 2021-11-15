@@ -69,11 +69,18 @@ New functions may be defined using `func`.
 
 ```
   func foo () (Int) 42
-
-[]
   foo
 
 [42]
+```
+
+`ret` may be used to return early.
+
+```
+  func foo () (Int) (35 ret 7)
+  foo
+
+[35]
 ```
 
 Anonymous functions may be created by omitting the name.
