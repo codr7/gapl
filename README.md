@@ -138,10 +138,10 @@ Performs tail call optimization.
 Disables all type checks for the duration of the call.
 
 ### continuations
-`suspend` may be used to capture the evaluation of its argument within the current context as a value, and `resume` to continue from that point.
+`suspend` may be used to capture the continued evaluation as a value.
 
 ```
-  suspend _
+  suspend ()
   42
 [Cont(1)]
   resume _
