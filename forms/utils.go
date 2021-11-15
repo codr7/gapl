@@ -14,7 +14,7 @@ func Eval(form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, []gapl.Val,
 		return in, nil, err
 	}
 
-	vm.Emit(&ops.STOP)
+	vm.Emit(&gapl.STOP)
 	skip.Pc = vm.Pc()
 	vm.NewState()
 	

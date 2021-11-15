@@ -1,8 +1,4 @@
-package ops
-
-import (
-	"github.com/codr7/gapl"
-)
+package gapl
 
 type Stop struct {}
 
@@ -12,7 +8,7 @@ func (self *Stop) Error() string {
 	return "STOP"
 }
 
-func (self *Stop) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
+func (self *Stop) Eval(pc Pc, vm *Vm) (Pc, error) {
 	return pc, self
 }
 

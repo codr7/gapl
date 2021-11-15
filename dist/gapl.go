@@ -1,12 +1,12 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/codr7/gapl"
 	"github.com/codr7/gapl/forms"
 	"github.com/codr7/gapl/ops"
 	"github.com/codr7/gapl/readers"
-	"github.com/codr7/gapl/tools"
 	"github.com/codr7/gapl/types"
 	"os"
 )
@@ -42,12 +42,16 @@ func main() {
 	abcLib.Bind("Func", &metaType, &funcType)
 	
 	vm.IntType = new(types.Int)
-	vm.IntType.Init("Int")
+	vm.IntType.Init("Int", &anyType)
 	abcLib.Bind("Int", &metaType, vm.IntType)
 
 	var macroType types.Macro
 	macroType.Init("Macro", &anyType)
 	abcLib.Bind("Macro", &metaType, &macroType)
+
+	vm.StringType = new(types.String)
+	vm.StringType.Init("String", &anyType)
+	abcLib.Bind("String", &metaType, vm.StringType)
 
 	abcLib.Bind("_", &macroType, new(gapl.Macro).Init("_", 0, 
 		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
@@ -94,7 +98,7 @@ func main() {
 				return in, err
 			}
 
-			vm.Emit(&ops.STOP)
+			vm.Emit(&gapl.STOP)
 			op.EndPc = vm.Pc()
 			return in, nil
 		}))
@@ -109,6 +113,14 @@ func main() {
 
 			vm.Emit(ops.NewCall(form, nil, gapl.CallFlags{CheckArgs: true, CheckRets: true}))
 			return in, nil
+		}))
+
+	abcLib.Bind("dump", &funcType, new(gapl.Func).Init("dump",
+		gapl.Args{}.Add("val", &anyType),
+		gapl.Rets{},
+		func(self *gapl.Func, flags gapl.CallFlags, retPc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
+			fmt.Printf("%v\n", vm.Pop().Dump())
+			return retPc, nil
 		}))
 	
 	abcLib.Bind("func", &macroType, new(gapl.Macro).Init("func", 3, 
@@ -220,6 +232,12 @@ func main() {
 			return in, nil
 		}))
 
+	abcLib.Bind("include", &macroType, new(gapl.Macro).Init("include", 1, 
+		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
+			path := in[0].(*forms.Literal).Val(vm).Data().(string)
+			return in[1:], vm.Include(path)
+		}))
+
 	abcLib.Bind("let", &macroType, new(gapl.Macro).Init("let", 2, 
 		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 			key := in[0].(*forms.Id).Name()
@@ -278,7 +296,7 @@ func main() {
 			}
 
 			vm.EndScope()
-			vm.Emit(&ops.STOP)
+			vm.Emit(&gapl.STOP)
 			op.EndPc = vm.Pc()
 			return in, nil
 		}))
@@ -319,15 +337,33 @@ func main() {
 			return retPc, nil
 		}))
 
-	fmt.Printf("g/>pl %v\n", gapl.VERSION)
-	fmt.Println("press Return on empty line to Eval")
-	fmt.Println("may the Source be with You\n")
-
-	vm.AddReader(readers.Ws, readers.Int, readers.Group, readers.Id)
+	vm.AddReader(readers.Ws, readers.Int, readers.String, readers.Group, readers.Id)
 	vm.NewScope()
 	abcLib.Import(vm.Scope())
 	mathLib.Import(vm.Scope())
 	vm.NewState()
-	
-	tools.Repl(os.Stdin, os.Stdout, &vm)
+
+	flag.Parse()
+	args := flag.Args()
+
+	if len(args) == 0 {
+		fmt.Printf("g/>pl %v\n", gapl.VERSION)
+		fmt.Println("press Return on empty line to Eval")
+		fmt.Println("may the Source be with You\n")		
+		vm.Repl(os.Stdin, os.Stdout)
+	} else {
+		for _, a := range args {
+			pc := vm.Pc()
+
+			if err := vm.Include(a); err != nil {
+				fmt.Println(err)
+				break
+			}
+
+			if err := vm.Eval(pc); err != nil {
+				fmt.Println(err)
+				break
+			}
+		}
+	}
 }

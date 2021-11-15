@@ -1,7 +1,7 @@
 ## g/>pl
 
 ```
-g/>pl 4
+g/>pl 5
 press Return on empty line to Eval
 may the Source be with You
 
@@ -26,7 +26,20 @@ The provided syntax is relatively simple and trivial to customize/replace.
 - All calls including operators are prefix.
 - Forms may be grouped using parens.
 
-### the stack
+### scripts
+`include` may be used to load external scripts.
+
+test.gapl
+```
+  42
+```
+```
+  include "test.gapl"
+
+[42]
+```
+
+### stack
 `d` may be used to drop the top `n` values.
 
 ```

@@ -3,9 +3,13 @@ package gapl
 import (
 	"bufio"
 	"fmt"
+	"io"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
-const VERSION = 4
+const VERSION = 5
 const FRAME_COUNT = 64
 const STATE_COUNT = 64
 
@@ -18,7 +22,7 @@ func (self Reg) String() string { return fmt.Sprintf("Reg(%v)", int(self)) }
 
 type Vm struct {
 	Readers []Reader
-	BoolType, ContType, IntType, RegType Type
+	BoolType, ContType, IntType, RegType, StringType Type
 	
 	scope *Scope
 	frames Frames
@@ -26,6 +30,8 @@ type Vm struct {
 	states States
 	stateCount int
 	code []Op
+
+	path string
 	unsafeDepth int
 }
 
@@ -162,6 +168,101 @@ func (self *Vm) Eval(pc Pc) error {
 	}
 
 	return err
+}
+
+func (self *Vm) Include(path string) error {
+	path = filepath.Join(self.path, path)
+	f, err := os.Open(path)
+
+	if err != nil {
+		return fmt.Errorf("Failed opening file: %v %v", path, err)
+	}
+	
+	bin := bufio.NewReader(f)
+	pos := NewPos(path, 0, 0)
+	var forms []Form
+
+	for {
+		if f, err := self.ReadForm(bin, &pos); err == io.EOF {
+			break
+		} else if err != nil {
+			return err
+		} else if f == nil {
+			break
+		} else {
+			forms = append(forms, f)
+		}
+	}
+
+	for len(forms) != 0 {
+		f := forms[0]
+		var err error
+		forms, err = f.Emit(forms[1:], self)
+		
+		if err != nil {
+			return err
+		}
+	}
+	
+	self.Emit(&STOP)
+	return nil
+}
+
+func (self *Vm) Repl(in io.Reader, out io.Writer) {
+	fmt.Fprintf(out, "  ")
+	var buf strings.Builder
+	ins := bufio.NewScanner(in)
+	
+	for ins.Scan() {
+		if line := ins.Text(); len(line) == 0 && buf.Len() > 0 {
+			bin := bufio.NewReader(strings.NewReader(buf.String()))
+			pos := NewPos("repl", 0, 0)
+			var forms []Form
+			
+			for {
+				if f, err := self.ReadForm(bin, &pos); err == io.EOF {
+					break
+				} else if err != nil {
+					fmt.Fprintln(out, err)
+					forms = nil
+					break
+				} else if f == nil {
+					break
+				} else {
+					forms = append(forms, f)
+				}
+			}
+
+			pc := self.Pc()
+			
+			for len(forms) != 0 {
+				f := forms[0]
+				var err error
+				forms, err = f.Emit(forms[1:], self)
+				
+				if err != nil {
+					fmt.Fprintln(out, err)
+					break
+				}
+			}
+
+			if len(forms) == 0 && self.Pc() != pc {
+				self.Emit(&STOP)
+				
+				if err := self.Eval(pc); err != nil {
+					fmt.Fprintln(out, err)
+				}
+			}
+			
+			buf.Reset()
+			fmt.Fprintf(out, "%v\n", *self.Stack())
+		} else {
+			buf.WriteString(line)
+			buf.WriteRune('\n')
+		}
+
+		fmt.Fprintf(out, "  ")
+	}
 }
 
 func (self *Vm) Unsafe() bool {

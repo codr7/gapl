@@ -8,8 +8,9 @@ import (
 
 func Group(in *bufio.Reader, pos *gapl.Pos, vm *gapl.Vm) (gapl.Form, error) {
 	fpos := *pos
-
-	if c, _, _ := in.ReadRune(); c == '(' {
+	var c rune
+	
+	if c, _, _ = in.ReadRune(); c == '(' {
 		pos.Read(c)
 	} else {
 		in.UnreadRune()
@@ -30,9 +31,10 @@ func Group(in *bufio.Reader, pos *gapl.Pos, vm *gapl.Vm) (gapl.Form, error) {
 		}
 	}
 
-	if c, _, _ := in.ReadRune(); c != ')' {
+	if c, _, _ = in.ReadRune(); c != ')' {
 		return nil, gapl.NewERead(fpos, "Open group")
 	}
 
+	pos.Read(c)
 	return forms.NewGroup(fpos, members...), nil
 }
