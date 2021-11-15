@@ -1,6 +1,3 @@
-* fix reg alloc for closure
-** the next reg alloc overwrites
-** convert load to push for closures on escape
 * add test macro
 * add tests/all.gapl
 * add tests/fibrec/tail.gapl from readme

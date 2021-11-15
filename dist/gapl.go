@@ -157,7 +157,8 @@ func main() {
 			}
 
 			_func := new(gapl.Func).Init(name, args, rets, nil)
-
+			vm.Emit(ops.NewClosure(form, _func))
+			
 			if name == "" {
 				vm.Emit(ops.NewPush(form, &funcType, _func))
 			} else {

@@ -25,7 +25,7 @@ func (self *Frame) CaptureState(vm *Vm) {
 		src.stack.Drop(len(args))
 	}
 
-	dst.regs = src.regs
+	dst.regs = self.target.regs
 
 	if self.flags.Unsafe {
 		vm.unsafeDepth++

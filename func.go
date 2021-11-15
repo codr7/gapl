@@ -48,6 +48,7 @@ type Func struct {
 	args Args
 	rets Rets
 	body FuncBody
+	regs Regs
 }
 
 func (self *Func) Init(name string, args Args, rets Rets, body FuncBody) *Func {
@@ -58,7 +59,7 @@ func (self *Func) Init(name string, args Args, rets Rets, body FuncBody) *Func {
 	return self
 }
 
-func (self *Func) CompileBody(startPc Pc) {	
+func (self *Func) CompileBody(startPc Pc) {
 	self.body = func(self *Func, flags CallFlags, retPc Pc, vm *Vm) (Pc, error) {
 		if !flags.Tco {
 			f := vm.NewFrame(self, flags, retPc)
@@ -134,4 +135,8 @@ func (self *Func) Applicable(stack []Val) bool {
 
 func (self *Func) Call(flags CallFlags, retPc Pc, vm *Vm) (Pc, error) {
 	return self.body(self, flags, retPc, vm)
+}
+
+func (self *Func) CaptureState(vm *Vm) {
+	self.regs = vm.State().regs
 }

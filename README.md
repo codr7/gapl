@@ -90,7 +90,7 @@ Anonymous functions may be created by omitting the name.
 Functions are lexically scoped,
 
 ```
-  func foo () () (
+  func foo () (Int) (
     func bar () (Int) 42
     bar
   )
@@ -157,5 +157,5 @@ $ python3 fibtail.py
     if = n 0 a if = n 1 b fibtail|t - n 1 b + a b
   bench 10000 fibtail|d|u 70 0 1
 
-[112]
+[108]
 ```

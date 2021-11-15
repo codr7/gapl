@@ -2,8 +2,10 @@ package gapl
 
 const REG_COUNT = 64
 
+type Regs = [REG_COUNT]Val
+
 type State struct {
-	regs [REG_COUNT]Val
+	regs Regs
 	stack Stack
 }
 
