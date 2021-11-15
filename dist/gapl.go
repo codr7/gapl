@@ -33,6 +33,10 @@ func main() {
 	abcLib.Bind("T", vm.BoolType, true)
 	abcLib.Bind("F", vm.BoolType, false)
 	
+	vm.ContType = new(types.Cont)
+	vm.ContType.Init("Cont", &anyType)
+	abcLib.Bind("Cont", &metaType, vm.ContType)
+
 	var funcType types.Func
 	funcType.Init("Func", &anyType)
 	abcLib.Bind("Func", &metaType, &funcType)
@@ -242,6 +246,32 @@ func main() {
 				scope.Bind(key, val.Type(), val.Data())
 			}
 			
+			return in, nil
+		}))
+
+	abcLib.Bind("resume", &macroType, new(gapl.Macro).Init("resume", 1, 
+		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
+			var err error
+
+			if in, err = in[0].Emit(in[1:], vm); err != nil {
+					return in, err
+			}
+
+			vm.Emit(ops.NewResume(form))
+			return in, nil
+		}))
+
+	abcLib.Bind("suspend", &macroType, new(gapl.Macro).Init("suspend", 1, 
+		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
+			op := vm.Emit(ops.NewSuspend(form, -1)).(*ops.Suspend)
+			var err error
+			
+			if in, err = in[0].Emit(in[1:], vm); err != nil {
+					return in, err
+			}
+
+			vm.Emit(&ops.STOP)
+			op.EndPc = vm.Pc()
 			return in, nil
 		}))
 

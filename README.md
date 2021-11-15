@@ -130,6 +130,18 @@ Performs tail call optimization.
 ##### |u(unsafe)
 Disables all type checks for the duration of the call.
 
+### continuations
+`suspend` may be used to capture the evaluation of its argument within the current context as a value, and `resume` to continue from that point.
+
+```
+  suspend 42
+
+[Cont(1)]
+  resume _
+
+[42]
+```
+
 ### performance
 g/>pl currently runs around twice as slow as Python3, any ideas on how to make it run faster are most welcome.
 

@@ -11,17 +11,19 @@ const STATE_COUNT = 64
 
 type Pc int
 type Reg int
+type Frames [FRAME_COUNT]Frame
+type States [STATE_COUNT]State
 
 func (self Reg) String() string { return fmt.Sprintf("Reg(%v)", int(self)) }
 
 type Vm struct {
 	Readers []Reader
-	BoolType, IntType, RegType Type
+	BoolType, ContType, IntType, RegType Type
 	
 	scope *Scope
-	frames [FRAME_COUNT]Frame
+	frames Frames
 	frameCount int
-	states [STATE_COUNT]State
+	states States
 	stateCount int
 	code []Op
 	unsafeDepth int

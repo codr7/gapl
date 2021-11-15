@@ -2,7 +2,7 @@ package gapl
 
 const REG_COUNT = 64
 
-type Regs = [REG_COUNT]Val
+type Regs [REG_COUNT]Val
 
 type State struct {
 	regs Regs
