@@ -271,11 +271,13 @@ func main() {
 		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 			op := vm.Emit(ops.NewSuspend(form, -1)).(*ops.Suspend)
 			var err error
+			vm.NewScope()
 			
 			if in, err = in[0].Emit(in[1:], vm); err != nil {
 					return in, err
 			}
 
+			vm.EndScope()
 			vm.Emit(&ops.STOP)
 			op.EndPc = vm.Pc()
 			return in, nil
