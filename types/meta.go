@@ -8,6 +8,6 @@ type Meta struct {
 	Basic
 }
 
-func (self Meta) DumpVal(v gapl.Val) string {
+func (self *Meta) DumpVal(v gapl.Val) string {
 	return v.Data().(gapl.Type).Name()
 }

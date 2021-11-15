@@ -9,12 +9,12 @@ type Reg struct {
 	Basic
 }
 
-func (self Reg) EmitVal(v gapl.Val, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
+func (self *Reg) EmitVal(v gapl.Val, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 	vm.Emit(ops.NewLoad(form, v.Data().(gapl.Reg), nil))
 	return in, nil
 }
 
-func (self Reg) LiteralVal(v gapl.Val) *gapl.Val {
+func (self *Reg) LiteralVal(v gapl.Val) *gapl.Val {
 	return nil
 }
 

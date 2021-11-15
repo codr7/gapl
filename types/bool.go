@@ -8,7 +8,7 @@ type Bool struct {
 	Basic
 }
 
-func (self Bool) DumpVal(v gapl.Val) string {
+func (self *Bool) DumpVal(v gapl.Val) string {
 	if v.Data().(bool) {
 		return "T"
 	}
@@ -16,6 +16,6 @@ func (self Bool) DumpVal(v gapl.Val) string {
 	return "F"
 }
 
-func (self Bool) TrueVal(v gapl.Val) bool {
+func (self *Bool) TrueVal(v gapl.Val) bool {
 	return v.Data().(bool)
 }
