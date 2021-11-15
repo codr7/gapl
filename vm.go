@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-const VERSION = 3
+const VERSION = 4
 const FRAME_COUNT = 64
 const STATE_COUNT = 64
 
