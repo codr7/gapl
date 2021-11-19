@@ -5,14 +5,14 @@ import (
 )
 
 type Stack struct {
-	items []Val
+	items Slice
 }
 
 func (self *Stack) Len() int {
 	return len(self.items)
 }
 
-func (self *Stack) Items() []Val {
+func (self *Stack) Items() Slice {
 	return self.items
 }
 

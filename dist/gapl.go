@@ -55,6 +55,10 @@ func main() {
 	macroType.Init("Macro", &anyType)
 	abcLib.Bind("Macro", &metaType, &macroType)
 
+	vm.SliceType = new(types.Slice)
+	vm.SliceType.Init("Slice", &anyType)
+	abcLib.Bind("Slice", &metaType, vm.SliceType)
+
 	vm.StringType = new(types.String)
 	vm.StringType.Init("String", &anyType)
 	abcLib.Bind("String", &metaType, vm.StringType)
@@ -331,6 +335,20 @@ func main() {
 			return in, nil
 		}))
 
+	abcLib.Bind("test", &macroType, new(gapl.Macro).Init("test", 2, 
+		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
+			expected := in[0].Val(vm).Data().(gapl.Slice)
+			op := vm.Emit(ops.NewTest(form, expected, -1)).(*ops.Test)
+			var err error
+			
+			if in, err = in[1].Emit(in[2:], vm); err != nil {
+				return in, err
+			}
+
+			op.EndPc = vm.Pc()
+			return in, nil
+		}))
+
 	var mathLib gapl.Lib
 	mathLib.Init("math")
 	vm.Bind("math", &libType, &mathLib)
@@ -368,7 +386,7 @@ func main() {
 			return retPc, nil
 		}))
 
-	vm.AddReader(readers.Ws, readers.Int, readers.String, readers.Group, readers.Id)
+	vm.AddReader(readers.Ws, readers.Int, readers.Slice, readers.String, readers.Group, readers.Id)
 	vm.NewState()
 
 	flag.Parse()

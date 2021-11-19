@@ -17,7 +17,7 @@ func NewGroup(pos gapl.Pos, members...gapl.Form) *Group {
 	return self
 }
 
-func (self Group) Members() []gapl.Form {
+func (self *Group) Members() []gapl.Form {
 	return self.members
 }
 

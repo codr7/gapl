@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-const VERSION = 7
+const VERSION = 8
 const FRAME_COUNT = 64
 const STATE_COUNT = 64
 
@@ -22,7 +22,7 @@ func (self Reg) String() string { return fmt.Sprintf("Reg(%v)", int(self)) }
 
 type Vm struct {
 	Readers []Reader
-	BoolType, ContType, IntType, RegType, StringType Type
+	BoolType, ContType, IntType, RegType, SliceType, StringType Type
 	
 	scope *Scope
 	frames Frames

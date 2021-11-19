@@ -14,5 +14,5 @@ func (self *String) DumpVal(v gapl.Val) string {
 }
 
 func (self *String) TrueVal(v gapl.Val) bool {
-	return v.Data().(string) != ""
+	return len(v.Data().(string)) != 0
 }

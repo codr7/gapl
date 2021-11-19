@@ -20,8 +20,6 @@ func Group(in *bufio.Reader, pos *gapl.Pos, vm *gapl.Vm) (gapl.Form, error) {
 	var members []gapl.Form
 
 	for {
-		Ws(in, pos, vm)
-		
 		if m, err := vm.ReadForm(in, pos); err != nil {
 			return nil, err
 		} else if m == nil {

@@ -8,7 +8,7 @@ type Nop struct {
 	gapl.BasicForm
 }
 
-func (self Nop) Emit(in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
+func (self *Nop) Emit(in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 	return in, nil
 }
 

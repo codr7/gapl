@@ -1,7 +1,7 @@
 ## g/>pl
 
 ```
-g/>pl 7
+g/>pl 8
 press Return on empty line to Eval
 may the Source be with You
 
@@ -179,6 +179,15 @@ The continuation is passed on the stack.
   42
 
 [42]
+```
+
+### tests
+`test` may be used to evaluate a test case and raise an error if it doesn't produce the expected stack.
+
+```
+  test [1 2 3] (1 2 4)
+
+Error in repl at line 0, column 0: Test failed: [1 2 3] [1 2 4]
 ```
 
 ### performance
