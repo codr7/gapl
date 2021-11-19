@@ -1,0 +1,55 @@
+test [T] = 42 42
+test [1 2 3] (1 2 3 4 5 dd)
+test [42] (let foo 42 foo)
+
+test [42] (
+  func foo () (Int) 42
+  foo
+)
+
+test [35] (
+  func foo () (Int) (35 ret 7)
+  foo
+)
+
+test [35 7] (
+  func () (Int Int) (35 7)
+  call _
+)
+
+test [42] (
+  func foo () (Int) (
+    func bar () (Int) 42
+    bar
+  )
+
+  foo
+)
+
+test [42] (
+  func foo () (Func) (
+    let bar 42
+    func () (Int) bar
+  )
+
+  call foo
+)
+
+test [7] (
+  suspend (let c _ 35 resume c)
+  7
+)
+
+test [55] (
+  func fib (n Int) (Int) 
+    if < n 2 n + fib - n 1 fib - n 2
+
+  fib 10
+)
+
+test [55] (
+  func fib (n Int a Int b Int) (Int)
+    if = n 0 a if = n 1 b fib|t - n 1 b + a b
+
+  fib 10 0 1
+)

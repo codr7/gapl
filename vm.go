@@ -23,6 +23,7 @@ func (self Reg) String() string { return fmt.Sprintf("Reg(%v)", int(self)) }
 type Vm struct {
 	Readers []Reader
 	BoolType, ContType, IntType, RegType, SliceType, StringType Type
+	AbcLib, MathLib *Lib
 	
 	scope *Scope
 	frames Frames

@@ -1,3 +1,1 @@
-* add tests/all.gapl from readme
-* add unit test to load & eval
-* profile test
+* profile tests
