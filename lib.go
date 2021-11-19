@@ -30,7 +30,7 @@ func (self *Lib) Bind(key string, _type Type, data interface{}) error {
 	return nil
 }
 
-func (self Lib) Find(key string) *Val {
+func (self *Lib) Find(key string) *Val {
 	if v, ok := self.bindings[key]; ok {
 		return &v
 	}
@@ -38,11 +38,19 @@ func (self Lib) Find(key string) *Val {
 	return nil
 }
 
-func (self Lib) Import(scope *Scope, keys...string) error {
+func (self *Lib) Keys() []string {
+	var out []string
+
+	for k, _ := range self.bindings {
+		out = append(out, k)
+	}
+
+	return out
+}
+
+func (self *Lib) Import(scope *Scope, keys...string) error {
 	if keys == nil {
-		for k, _ := range self.bindings {
-			keys = append(keys, k)
-		}
+		keys = self.Keys()
 	}
 	
 	for _, k := range keys {
@@ -60,4 +68,8 @@ func (self Lib) Import(scope *Scope, keys...string) error {
 	}
 
 	return nil
+}
+
+func (self Lib) String() string {
+	return fmt.Sprintf("Lib(%v)", self.name)
 }

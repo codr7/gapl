@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-const VERSION = 5
+const VERSION = 7
 const FRAME_COUNT = 64
 const STATE_COUNT = 64
 
@@ -142,6 +142,10 @@ func (self *Vm) Pop() Val {
 	return self.State().stack.Pop()
 }
 
+func (self *Vm) Bind(key string, _type Type, data interface{}) {
+	self.Scope().Bind(key, _type, data)
+}
+
 func (self *Vm) BindReg(key string) Reg {
 	scope := self.Scope()
 
@@ -153,6 +157,10 @@ func (self *Vm) BindReg(key string) Reg {
 	scope.regCount++
 	scope.Bind(key, self.RegType, reg)
 	return reg
+}
+
+func (self *Vm) Find(key string) *Val {
+	return self.Scope().Find(key)
 }
 
 func (self *Vm) Eval(pc Pc) error {

@@ -1,1 +1,2 @@
+import abc (dump)
 dump 42

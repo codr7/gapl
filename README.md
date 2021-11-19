@@ -1,7 +1,7 @@
 ## g/>pl
 
 ```
-g/>pl 5
+g/>pl 7
 press Return on empty line to Eval
 may the Source be with You
 
@@ -37,6 +37,16 @@ test.gapl
   include "test.gapl"
 
 [42]
+```
+
+### libraries
+The REPL imports everything by default while scripts start with nothing but `import`.
+
+`import` may be used to import identifiers into the current scope, an empty list indicates everything.
+
+```
+  import abc ()
+  import math (+ -)
 ```
 
 ### stack

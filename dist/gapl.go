@@ -15,10 +15,11 @@ func main() {
 	var vm gapl.Vm
 	vm.RegType = new(types.Reg)
 	vm.RegType.Init("Reg")
+	vm.NewScope()
 	
 	var abcLib gapl.Lib
 	abcLib.Init("abc")
-
+	
 	var anyType types.Basic
 	anyType.Init("Any")
 
@@ -26,6 +27,11 @@ func main() {
 	metaType.Init("Meta", &anyType)
 	abcLib.Bind("Any", &metaType, &anyType)
 	abcLib.Bind("Meta", &metaType, &metaType)
+	
+	var libType types.Lib
+	libType.Init("Lib", &anyType)
+	abcLib.Bind("Lib", &metaType, &libType)
+	vm.Bind("abc", &libType, &abcLib)
 
 	vm.BoolType = new(types.Bool)
 	vm.BoolType.Init("Bool", &anyType)
@@ -232,6 +238,30 @@ func main() {
 			return in, nil
 		}))
 
+	abcLib.Bind("import", &macroType, new(gapl.Macro).Init("import", 2, 
+		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
+			libName := in[0].(*forms.Id).Name()
+			lib := vm.Find(libName)
+
+			if lib == nil {
+				return in, gapl.NewEEmit(form.Pos(), "Unknown library: %v", libName)
+			}
+
+			if lib.Type() != &libType {
+				return in, gapl.NewEEmit(form.Pos(), "Expected library: %v", lib.Dump())
+			}
+
+			keyForms := in[1].(*forms.Group).Members()
+			var keys []string
+			
+			for _, kf := range keyForms {
+				keys = append(keys, kf.(*forms.Id).Name())
+			}
+			
+			lib.Data().(*gapl.Lib).Import(vm.Scope(), keys...)
+			return in[2:], nil
+		}))
+
 	abcLib.Bind("include", &macroType, new(gapl.Macro).Init("include", 1, 
 		func(self *gapl.Macro, form gapl.Form, in []gapl.Form, vm *gapl.Vm) ([]gapl.Form, error) {
 			path := in[0].(*forms.Literal).Val(vm).Data().(string)
@@ -303,7 +333,8 @@ func main() {
 
 	var mathLib gapl.Lib
 	mathLib.Init("math")
-	
+	vm.Bind("math", &libType, &mathLib)
+
 	mathLib.Bind("+", &funcType, new(gapl.Func).Init("+",
 		gapl.Args{}.Add("x", vm.IntType).Add("y", vm.IntType),
 		gapl.Rets{}.Add(vm.IntType),
@@ -338,9 +369,6 @@ func main() {
 		}))
 
 	vm.AddReader(readers.Ws, readers.Int, readers.String, readers.Group, readers.Id)
-	vm.NewScope()
-	abcLib.Import(vm.Scope())
-	mathLib.Import(vm.Scope())
 	vm.NewState()
 
 	flag.Parse()
@@ -349,9 +377,14 @@ func main() {
 	if len(args) == 0 {
 		fmt.Printf("g/>pl %v\n", gapl.VERSION)
 		fmt.Println("press Return on empty line to Eval")
-		fmt.Println("may the Source be with You\n")		
+		fmt.Println("may the Source be with You\n")
+		
+		abcLib.Import(vm.Scope())
+		mathLib.Import(vm.Scope())
 		vm.Repl(os.Stdin, os.Stdout)
 	} else {
+		abcLib.Import(vm.Scope(), "import")
+
 		for _, a := range args {
 			pc := vm.Pc()
 
