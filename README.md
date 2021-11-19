@@ -172,7 +172,7 @@ Disables all type checks for the duration of the call.
 [42]
 ```
 
-The continuation is passed on the stack to it's body.
+The continuation is passed on the stack.
 
 ```
   suspend resume _
