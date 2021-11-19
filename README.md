@@ -21,10 +21,10 @@ The functionality described in this document is implemented and verified to work
 ### syntax
 The provided syntax is relatively simple and trivial to customize/replace.
 
-- Forms are separated by whitespace
-- All calls are prefix
-- The input stream is consumed until all arguments have been collected (recursively) or `EOF`
-- Forms may be grouped using parens
+- Forms are separated by whitespace.
+- All calls are prefix.
+- The input stream is consumed until all arguments have been collected (recursively).
+- Forms may be grouped using parens.
 
 ### scripts
 `include` may be used to load external scripts.
