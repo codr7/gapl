@@ -10,7 +10,7 @@ import (
 
 func main() {
 	var vm gapl.Vm
-	vm.NewScope()
+	scope := vm.NewScope()
 	setup.InitVm(&vm)
 	vm.NewState()
 
@@ -22,8 +22,8 @@ func main() {
 		fmt.Println("press Return on empty line to Eval")
 		fmt.Println("may the Source be with You\n")
 		
-		vm.AbcLib.Import(vm.Scope())
-		vm.MathLib.Import(vm.Scope())
+		vm.AbcLib.Import(scope)
+		vm.MathLib.Import(scope)
 		vm.Repl(os.Stdin, os.Stdout)
 	} else {
 		vm.AbcLib.Import(vm.Scope(), "import")

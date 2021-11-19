@@ -8,10 +8,10 @@ import (
 
 func TestEval(t *testing.T){
 	var vm gapl.Vm
-	vm.NewScope()
+	scope := vm.NewScope()
 	setup.InitVm(&vm)
-	vm.AbcLib.Import(vm.Scope())
-	vm.MathLib.Import(vm.Scope())
+	vm.AbcLib.Import(scope)
+	vm.MathLib.Import(scope)
 	vm.NewState()
 	pc := vm.Pc()
 
