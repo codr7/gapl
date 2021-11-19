@@ -157,7 +157,7 @@ Drops returned values.
 ##### |t(co)
 Performs tail call optimization.
 
-##### |u(unsafe)
+##### |u(nsafe)
 Disables all type checks for the duration of the call.
 
 ### continuations
