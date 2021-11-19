@@ -17,7 +17,7 @@ func NewSlice(form gapl.Form, count int) *Slice {
 func (self *Slice) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	out := make(gapl.Slice, self.count)
 
-	for i := 0; i < self.count; i++ {
+	for i := self.count-1; i >= 0; i-- {
 		out[i] = vm.Pop()
 	}
 
