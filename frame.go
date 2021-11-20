@@ -35,16 +35,18 @@ func (self *Frame) RestoreState(vm *Vm) (Pc, error) {
 	rets := self.target.Rets()
 	src := vm.EndState()
 	
-	if len(rets) > 0 {
+	if retCount := len(rets); retCount > 0 {
 		dst := vm.State()
 		
 		if self.flags.CheckRets && !vm.Unsafe() {
-			if src.stack.Len() < len(rets) {
-				return -1, fmt.Errorf("Missing return values: %v %v", len(rets), src.stack)
+			valCount := src.stack.Len()
+			
+			if valCount < retCount {
+				return -1, fmt.Errorf("Missing return values: %v %v", retCount, src.stack)
 			}
 
 			for i, rt := range rets {
-				st := src.stack.Items()[src.stack.Len()-i-1].Type()
+				st := src.stack.Items()[valCount-i-1].Type()
 				
 				if !Isa(st, rt) {
 					return -1, fmt.Errorf("Wrong type returned: %v %v", st, rt)
@@ -54,7 +56,7 @@ func (self *Frame) RestoreState(vm *Vm) (Pc, error) {
 
 		
 		if !self.flags.Drop {
-			dst.stack.Append(src.stack.Items()[src.stack.Len()-len(rets):])
+			dst.stack.Append(src.stack.Drop(retCount))
 		}
 	}
 

@@ -204,7 +204,7 @@ $ python3 fibrec.py
     if < n 2 n + fibrec - n 1 fibrec - n 2
   bench 100 fibrec|d|u 20
 
-[458]
+[500]
 ```
 
 ```
