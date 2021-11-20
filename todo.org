@@ -1,3 +1,11 @@
+* optimize vm.code
+** remove Pc type
+** change vm.code type to Op
+** add BasicOp with Next Op
+** change emit to set Next
+** change retPc to retOp
+** tail call .Next.Eval() in call op
+** bench
 * add Nil type
 ** not any
 ** add abc.NIL binding
@@ -5,5 +13,5 @@
 ** add Lib.BindFunc
 *** create multi
 ** add Dispatch op
-* add math.Rat
+** add math.Rat
 ** add Int/Int->Rat

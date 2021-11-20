@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/codr7/gapl"
 	"github.com/codr7/gapl/setup"
+	"github.com/codr7/gapl/tools"
 	"os"
 )
 
@@ -24,7 +25,7 @@ func main() {
 		
 		vm.AbcLib.Import(scope)
 		vm.MathLib.Import(scope)
-		vm.Repl(os.Stdin, os.Stdout)
+		tools.Repl(os.Stdin, os.Stdout, &vm)
 	} else {
 		vm.AbcLib.Import(vm.Scope(), "import")
 

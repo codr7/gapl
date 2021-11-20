@@ -384,5 +384,16 @@ func InitVm(vm *gapl.Vm) {
 			return retPc, nil
 		}))
 
+	vm.MathLib.Bind(">", &funcType, new(gapl.Func).Init(">",
+		gapl.Args{}.Add("x", vm.IntType).Add("y", vm.IntType),
+		gapl.Rets{}.Add(vm.BoolType),
+		func(self *gapl.Func, flags gapl.CallFlags, retPc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
+			stack := vm.Stack()
+			y := stack.Pop()
+			x := stack.Peek()
+			x.Set(vm.BoolType, x.Data().(int) > y.Data().(int))
+			return retPc, nil
+		}))
+
 	vm.AddReader(readers.Ws, readers.Int, readers.Slice, readers.String, readers.Group, readers.Id)
 }

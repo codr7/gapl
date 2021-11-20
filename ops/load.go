@@ -20,6 +20,10 @@ func (self *Load) Eval(pc gapl.Pc, vm *gapl.Vm) (gapl.Pc, error) {
 	return pc+1, nil
 }
 
+func (self *Load) Reg() gapl.Reg {
+	return self.reg
+}
+
 func (self *Load) String() string {
 	return fmt.Sprintf("LOAD %v %v", self.reg, self._type)
 }

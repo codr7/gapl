@@ -6,7 +6,6 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 const VERSION = 8
@@ -30,7 +29,7 @@ type Vm struct {
 	frameCount int
 	states States
 	stateCount int
-	code []Op
+	Code []Op
 
 	path string
 	unsafeDepth int
@@ -86,12 +85,12 @@ func (self *Vm) Frame() *Frame {
 }
 
 func (self *Vm) Pc() Pc {
-	return Pc(len(self.code))
+	return Pc(len(self.Code))
 }
 
 func (self *Vm) Emit(op Op) Op{
 	//fmt.Printf(":%v\n", op)
-	self.code = append(self.code, op)
+	self.Code = append(self.Code, op)
 	return op
 }
 
@@ -121,9 +120,16 @@ func (self *Vm) Load(reg Reg) {
 	state.stack.Push(val.Type(), val.Data())
 }
 
-func (self *Vm) Store(reg Reg) {
+func (self *Vm) Store(reg Reg, pop bool) {
 	state := self.State()
-	val := state.stack.Pop()
+	var val Val
+
+	if pop {
+		val = state.stack.Pop()
+	} else {
+		val = *state.stack.Peek()
+	}
+	
 	state.regs[reg] = val
 }
 
@@ -166,10 +172,10 @@ func (self *Vm) Find(key string) *Val {
 
 func (self *Vm) Eval(pc Pc) error {
 	var err error
-	
+
 	for err == nil {
-		//fmt.Printf("%v %v\n", self.code[pc], *self.Stack())
-		pc, err = self.code[pc].Eval(pc, self)
+		//fmt.Printf("%v %v\n", self.Code[pc], *self.Stack())
+		pc, err = self.Code[pc].Eval(pc, self)
 	}
 
 	if err != nil && err.Error() == "STOP" {
@@ -215,63 +221,6 @@ func (self *Vm) Include(path string) error {
 	
 	self.Emit(&STOP)
 	return nil
-}
-
-func (self *Vm) Repl(in io.Reader, out io.Writer) {
-	fmt.Fprintf(out, "  ")
-	var buf strings.Builder
-	ins := bufio.NewScanner(in)
-	
-	for ins.Scan() {
-		if line := ins.Text(); len(line) == 0 && buf.Len() > 0 {
-			bin := bufio.NewReader(strings.NewReader(buf.String()))
-			pos := NewPos("repl", 0, 0)
-			var forms []Form
-			
-			for {
-				if f, err := self.ReadForm(bin, &pos); err == io.EOF {
-					break
-				} else if err != nil {
-					fmt.Fprintln(out, err)
-					forms = nil
-					break
-				} else if f == nil {
-					break
-				} else {
-					forms = append(forms, f)
-				}
-			}
-
-			pc := self.Pc()
-			
-			for len(forms) != 0 {
-				f := forms[0]
-				var err error
-				forms, err = f.Emit(forms[1:], self)
-				
-				if err != nil {
-					fmt.Fprintln(out, err)
-					break
-				}
-			}
-
-			if len(forms) == 0 && self.Pc() != pc {
-				self.Emit(&STOP)
-				
-				if err := self.Eval(pc); err != nil {
-					fmt.Fprintln(out, err)
-				}
-			}
-			
-			buf.Reset()
-			fmt.Fprintf(out, "%v\n", *self.Stack())
-		} else {
-			buf.WriteString(line)
-			buf.WriteRune('\n')
-		}
-
-		fmt.Fprintf(out, "  ")
-	}
 }
 
 func (self *Vm) Unsafe() bool {
