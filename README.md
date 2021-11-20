@@ -191,7 +191,7 @@ Error in repl at line 0, column 0: Test failed: [1 2 3] [1 2 4]
 ```
 
 ### performance
-g/>pl currently runs around twice as slow as Python3, any ideas on how to make it run faster are most welcome.
+g/>pl currently runs at around half the speed of Python3, any ideas on how to improve performance further are most welcome.
 
 ```
 $ cd bench
