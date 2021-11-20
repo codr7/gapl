@@ -40,16 +40,16 @@ test [7] (
   7
 )
 
-test [55] (
+test [6765] (
   func fib (n Int) (Int) 
     if < n 2 n + fib - n 1 fib - n 2
 
-  fib 10
+  fib 20
 )
 
-test [55] (
+test [12586269025] (
   func fib (n Int a Int b Int) (Int)
     if = n 0 a if = n 1 b fib|t - n 1 b + a b
 
-  fib 10 0 1
+  fib 50 0 1
 )

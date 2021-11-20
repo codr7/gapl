@@ -1,1 +1,9 @@
-* profile tests
+* add Nil type
+** not any
+** add abc.NIL binding
+* add Multi
+** add Lib.BindFunc
+*** create multi
+** add Dispatch op
+* add math.Rat
+** add Int/Int->Rat

@@ -20,8 +20,11 @@ func (self *Stack) Append(items []Val) {
 	self.items = append(self.items, items...)
 }
 
-func (self *Stack) Drop(count int) {
-	self.items = self.items[:len(self.items)-count]
+func (self *Stack) Drop(count int) Slice {
+	max := len(self.items)
+	out := self.items[max-count:]
+	self.items = self.items[:max-count]
+	return out
 }
 
 func (self *Stack) Push(_type Type, data interface{}) {

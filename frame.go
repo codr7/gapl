@@ -20,9 +20,8 @@ func (self *Frame) Init(target *Func, flags CallFlags, retPc Pc) *Frame {
 func (self *Frame) CaptureState(vm *Vm) {
 	src, dst := vm.State(), vm.NewState()
 	
-	if args := self.target.Args(); len(args) > 0 {
-		dst.stack.Append(src.stack.Items()[src.stack.Len()-len(args):])
-		src.stack.Drop(len(args))
+	if argCount := len(self.target.Args()); argCount > 0 {
+		dst.stack.Append(src.stack.Drop(argCount))
 	}
 
 	dst.regs = self.target.regs
