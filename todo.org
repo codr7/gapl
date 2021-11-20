@@ -21,3 +21,4 @@
 ** add Dispatch op
 ** add math.Rat
 ** add Int/Int->Rat
+* make nextTypeId atomic

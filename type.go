@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-const TYPE_COUNT = 64
+const MAX_TYPE_ID = 64
 
 var nextTypeId int
 
@@ -13,7 +13,7 @@ type Type interface {
 
 	Id() int
 	Name() string
-	AddParentTypes(dst [TYPE_COUNT]Type, dpt Type)
+	AddParentTypes(dst [MAX_TYPE_ID]Type, dpt Type)
 	GetParentType(other Type) Type
 
 	DumpVal(v Val) string
@@ -26,10 +26,14 @@ type Type interface {
 type BasicType struct {
 	id int
 	name string
-	parentTypes [TYPE_COUNT]Type
+	parentTypes [MAX_TYPE_ID]Type
 }
 
 func (self *BasicType) Init(name string, parentTypes...Type) {
+	if nextTypeId == MAX_TYPE_ID {
+		panic("No more types!")
+	}
+	
 	self.id = nextTypeId
 	nextTypeId++
 	
@@ -52,7 +56,7 @@ func (self *BasicType) String() string {
 	return self.Name()
 }
 
-func (self *BasicType) AddParentTypes(dst [TYPE_COUNT]Type, dpt Type) {
+func (self *BasicType) AddParentTypes(dst [MAX_TYPE_ID]Type, dpt Type) {
 	for i, pt := range self.parentTypes {
 		if pt != nil {
 			dst[i] = dpt
