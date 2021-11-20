@@ -1,9 +1,4 @@
-* test type id conversion wo unsafe flag
 * call Fuse when including in gapl.go
-* add Nop.Count
-** move to ops
-** return pc+Count
-** fuse consecutive nops
 * optimize vm.code
 ** remove Pc type
 ** change vm.code type to Op
@@ -12,6 +7,11 @@
 ** change retPc to retOp
 ** tail call .Next.Eval() in call op
 ** bench
+* keep fusing until no more changes
+* add Nop.Count
+** move to ops
+** return pc+Count
+** fuse consecutive nops
 * add Nil type
 ** not any
 ** add abc.NIL binding

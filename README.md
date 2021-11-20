@@ -202,9 +202,9 @@ $ python3 fibrec.py
 ```
   func fibrec (n Int) (Int) 
     if < n 2 n + fibrec - n 1 fibrec - n 2
-  bench 100 fibrec|d|u 20
+  bench 100 fibrec|d 20
 
-[501]
+[562]
 ```
 
 ```
@@ -215,7 +215,7 @@ $ python3 fibtail.py
 ```
   func fibtail (n Int a Int b Int) (Int)
     if = n 0 a if = n 1 b fibtail|t - n 1 b + a b
-  bench 10000 fibtail|d|u 70 0 1
+  bench 10000 fibtail|d 70 0 1
 
-[98]
+[114]
 ```
