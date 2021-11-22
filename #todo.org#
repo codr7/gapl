@@ -1,4 +1,13 @@
+
 * call Fuse when including in gapl.go
+* optimize vm.code
+** remove Pc type
+** change vm.code type to Op
+** add BasicOp with Next Op
+** change emit to set Next
+** change retPc to retOp
+** tail call .Next.Eval() in call op
+** bench
 * keep fusing until no more changes
 * add Nop.Count
 ** move to ops

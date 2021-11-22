@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/codr7/gapl"
-	"github.com/codr7/gapl/compilers"
+	"github.com/codr7/gapl/procs"
 	"io"
 	"strings"
 )
@@ -48,7 +48,7 @@ func Repl(in io.Reader, out io.Writer, vm *gapl.Vm) {
 			}
 
 			if len(forms) == 0 && vm.Pc() != pc {
-				compilers.Fuse(pc, vm)
+				procs.Fuse(pc, vm)
 				vm.Emit(&gapl.STOP)
 				
 				if err := vm.Eval(pc); err != nil {

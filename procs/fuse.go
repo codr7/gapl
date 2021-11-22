@@ -1,4 +1,4 @@
-package compilers
+package procs
 
 import (
 	"github.com/codr7/gapl"
